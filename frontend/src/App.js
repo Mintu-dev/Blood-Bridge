@@ -1,8 +1,12 @@
-
+import Navbar from "./Navbar.js"
+import LandingPage from "./LandingPage/LandingPage.js"
 
 function App() {
   return (
-    <h1>LifeConnect</h1>
+    <>
+      <Navbar/>
+      <LandingPage/>
+    </>
   );
 }
 
