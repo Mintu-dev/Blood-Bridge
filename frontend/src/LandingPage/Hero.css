@@ -105,3 +105,36 @@ width:100%;
   object-fit: contain;
 }
 
+.becomeDonar:hover{
+    box-shadow:4px 7px 10px #BF1A1A;
+    background-color:#BF1A1A;
+}
+.findDonar{
+  color:rgba(0, 0, 0, 0.458);
+  border:1px solid rgba(0, 0, 0, 0.458);
+  padding-left:5px;
+  padding-right:5px;
+}
+.findDonar:hover{
+  box-shadow:2px 2px 15px;
+  border:none;
+}
+
+.stat-box {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.stat-box h2 {
+  color: #F63049;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.stat-box p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
