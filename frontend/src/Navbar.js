@@ -13,8 +13,8 @@ function Navbar() {
             href="#"
           >
            <i className="bi bi-droplet-fill blood-icon"></i>
-            <span className="life-text">Life</span>
-            <span className="connect-text">Connect</span>
+            <span className="life-text">𝓛𝓲𝓯𝓮</span>
+            <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
           </a>
 
           {/* Toggle Button */}

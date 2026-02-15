@@ -1,5 +1,9 @@
 import Hero from "./Hero.js"
 import Features from "./Features.js"
+import Work from "./Work.js"
+import BloodType from "./BloodType.js"
+import Difference from "./Difference";
+
 
 function LandingPage(){
 
@@ -7,6 +11,9 @@ function LandingPage(){
         <>
             <Hero/>
             <Features/>
+            <Work/>
+            <BloodType/>
+            <Difference/>
         </>
     )
 }

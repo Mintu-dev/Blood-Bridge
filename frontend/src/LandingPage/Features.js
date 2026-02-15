@@ -16,7 +16,7 @@ function Features() {
           >
             Features
           </span>
-          <h1 className="mt-4 fw-bold">Why Choose LifeConnect?</h1>
+          <h1 className="mt-4">𝑾𝒉𝒚 𝑪𝒉𝒐𝒐𝒔𝒆 𝑳𝒊𝒇𝒆𝑪𝒐𝒏𝒏𝒆𝒄𝒕?</h1>
           <p className="mt-3">
             Powerful features designed to make blood donation simple,
             accessible, and impactful.
