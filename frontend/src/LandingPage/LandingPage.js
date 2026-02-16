@@ -1,21 +1,28 @@
-import Hero from "./Hero.js"
-import Features from "./Features.js"
-import Work from "./Work.js"
-import BloodType from "./BloodType.js"
+import Hero from "./Hero.js";
+import Features from "./Features.js";
+import Work from "./Work.js";
+import BloodType from "./BloodType.js";
 import Difference from "./Difference";
 
+function LandingPage() {
+  return (
+    <>
+      <section id="hero">
+        <Hero />
+      </section>
 
-function LandingPage(){
+      <section id="features">
+        <Features />
+      </section>
 
-    return (
-        <>
-            <Hero/>
-            <Features/>
-            <Work/>
-            <BloodType/>
-            <Difference/>
-        </>
-    )
+      <section id="work">
+        <Work />
+      </section>
+        <BloodType />
+        <Difference />
+    
+    </>
+  );
 }
 
-export default LandingPage
+export default LandingPage;

@@ -4,6 +4,7 @@
 .signin:hover{
     box-shadow: 3px  7px 10px rgb(154, 150, 150);
 }
+
 .nav-link:hover{
     color:rgb(215, 66, 66)
 }
@@ -67,6 +68,18 @@
   background-color: black;
   color: white !important;
 }
+.nav-hover {
+  transition: 0.3s;
+}
+
+.nav-hover:hover {
+  color: red;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+
 
 /* Register Button */
 .register {
