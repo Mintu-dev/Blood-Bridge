@@ -1,11 +1,9 @@
-import express from "express";
+import {app} from "./app.js"
 import mongoose from "mongoose";
 
-const app = express();
 const PORT = process.env.PORT || 8000;
 
-// JSON parsing middleware
-app.use(express.json());
+
   
 console.log("DB URI:", process.env.DB_CONNECTION);
 (async () => {
