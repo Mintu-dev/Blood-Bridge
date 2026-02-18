@@ -6,9 +6,10 @@ import {ApiResponse} from "../utils/ApiResponse.js";
 const registerUser = asyncHandler(async (req,res)=>{
 
     const {fullname , email , bio , dob , gender, username,password} = req.body;
+    console.log(req.body);
 
-    if(!(fullname || email || username || password)){
-        throw new ApiError(404 , "Fill all the details");
+    if(!(fullname && email && username && password)){
+        throw new ApiError(400 , "Fill all the details");
     }
 
     const existingUser = await User.findOne({

@@ -23,7 +23,7 @@ const UserSchema = new Schema(
     gender: {
       type: String,
       required: true,
-      enum: ["Male", "Female", "rather not to disclose"],
+      enum: ["Male", "Female", "Rather not to disclose"],
     },
     dob: {
       type: Date,
@@ -62,7 +62,7 @@ UserSchema.methods.generateAccessToken = function(){
   },
 process.env.ACCESS_TOKEN_SECRET,
 {
-  expireIn:process.env.ACCESS_TOKEN_EXPIRY
+  expiresIn:process.env.ACCESS_TOKEN_EXPIRY
 })}
 
 UserSchema.methods.generateRefreshToken = function(){
