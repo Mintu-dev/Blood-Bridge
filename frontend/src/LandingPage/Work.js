@@ -1,6 +1,21 @@
 import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 function Work() {
+
+   useEffect(() => {
+      AOS.init({
+        duration: 1000,  
+        once: false        
+      });
+  
+      AOS.refresh();
+      
+    }, []);
+
+
   return (
     <div
       className="work-section mt-5 mb-5"
@@ -35,7 +50,7 @@ function Work() {
         </div>
 
         {/* Cards Section */}
-        <div className="row justify-content-center">
+        <div data-aos="flip-left" className="row justify-content-center">
 
           {/* Card 1 */}
           <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center">

@@ -10,7 +10,9 @@ function Difference() {
         color: "#FF5656",
       }}
     >
-      <div className="container">
+      <div data-aos="flip-left"
+     data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000" className="container">
         <div className="row mt-5">
           <div className="col mt-5 d-flex justify-content-center align-items-center mb-5">
             <div

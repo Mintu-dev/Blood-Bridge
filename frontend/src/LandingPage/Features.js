@@ -1,7 +1,24 @@
 import React from "react";
 import "./Features.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 function Features() {
+
+   useEffect(() => {
+    AOS.init({
+      duration: 1000,  
+      once: false        
+    });
+
+    AOS.refresh();
+    
+  }, []);
+
+  
+
+
   return (
     <div className="container mt-5 mb-5">
       <div className="row justify-content-center mt-5">
@@ -28,7 +45,7 @@ function Features() {
       <div className="row mt-5 g-4 align-items-stretch">
 
         {/* Card 1 */}
-        <div className="col-md-6 col-12">
+        <div data-aos="fade-right" className="col-md-6 col-12">
           <div
             className="card h-100"
             style={{
@@ -65,7 +82,7 @@ function Features() {
         </div>
 
         {/* Card 2 */}
-        <div className="col-md-6 col-12">
+        <div data-aos="fade-left" className="col-md-6 col-12">
           <div
             className="card h-100"
             style={{
@@ -101,7 +118,7 @@ function Features() {
         </div>
 
         {/* Card 3 */}
-        <div className="col-md-6 col-12">
+        <div data-aos="fade-right" className="col-md-6 col-12">
           <div
             className="card h-100"
             style={{
@@ -137,7 +154,7 @@ function Features() {
         </div>
 
         {/* Card 4 */}
-        <div className="col-md-6 col-12">
+        <div data-aos="fade-left" className="col-md-6 col-12">
           <div
             className="card h-100"
             style={{

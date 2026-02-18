@@ -1,6 +1,19 @@
 import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 function BloodType(){
+
+    useEffect(() => {
+      AOS.init({
+        duration: 2000,  
+        once: false        
+      });
+  
+      AOS.refresh();
+      
+    }, []);
 
     return(
       <div className="container">
@@ -26,7 +39,7 @@ function BloodType(){
     </div>
   </div>
         <div className="row d-flex justify-content-center align-items-center">
-            <div className="col d-flex justify-content-center align-items-center">
+            <div data-aos="flip-up" className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#DA3D20" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">A+</h5>
@@ -35,7 +48,7 @@ function BloodType(){
      </div>
      </div>
 
-     <div className="col d-flex justify-content-center align-items-center">
+     <div data-aos="flip-down" className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#DA3D20" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">A-</h5>
@@ -43,7 +56,7 @@ function BloodType(){
      </div>
      </div>
      </div>
-     <div className="col d-flex justify-content-center align-items-center">
+     <div  data-aos="flip-up" className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#DA3D20" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">B+</h5>
@@ -51,7 +64,7 @@ function BloodType(){
      </div>
      </div>
      </div> <div className="col d-flex justify-content-center align-items-center">
-      <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#F63049" , color:"#fff"}}>
+      <div  data-aos="flip-down"className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#F63049" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">B-</h5>
     <p className="card-text">2%</p>
@@ -59,7 +72,7 @@ function BloodType(){
      </div>
      </div>  
 
-     <div className="col d-flex justify-content-center align-items-center">
+     <div  data-aos="flip-up" className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "7rem" , backgroundColor:"#F63049" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">AB+</h5>
@@ -68,7 +81,7 @@ function BloodType(){
      </div>
      </div>
 
-     <div className="col d-flex justify-content-center align-items-center">
+     <div data-aos="flip-down"className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#F63049" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">AB-</h5>
@@ -77,7 +90,7 @@ function BloodType(){
      </div>
      </div>
 
-      <div className="col d-flex justify-content-center align-items-center">
+      <div data-aos="flip-up" className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#C40C0C" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">O+</h5>
@@ -86,7 +99,7 @@ function BloodType(){
      </div>
      </div>
 
-     <div className="col d-flex justify-content-center align-items-center">
+     <div data-aos="flip-down"className="col d-flex justify-content-center align-items-center">
       <div className="card mb-5 mt-4 text-center" style={{width: "6rem" , backgroundColor:"#C40C0C" , color:"#fff"}}>
   <div className="card-body">
     <h5 className="card-title fs-2 fw-bold">O-</h5>

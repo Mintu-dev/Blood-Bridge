@@ -1,6 +1,7 @@
 import React from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 function Navbar() {
   return (
@@ -8,14 +9,15 @@ function Navbar() {
       <div className="container">
 
         {/* Logo */}
-        <a
+        <HashLink
+          smooth
+          to="/#hero"
           className="navbar-brand fw-bold fs-2 lifeconnect d-flex align-items-center gap-2"
-          href="#hero"
         >
           <i className="bi bi-droplet-fill blood-icon"></i>
           <span className="life-text">𝓛𝓲𝓯𝓮</span>
           <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
-        </a>
+        </HashLink>
 
         {/* Toggle Button */}
         <button
@@ -31,20 +33,20 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
 
-            <a href="#features" className="nav-link nav-hover">
+            <HashLink smooth to="/#features" className="nav-link nav-hover">
               Features
-            </a>
+            </HashLink>
 
-            <a href="#work" className="nav-link nav-hover">
+            <HashLink smooth to="/#work" className="nav-link nav-hover">
               How It Works
-            </a>
+            </HashLink>
 
-            <a href="#bloodtypes" className="nav-link nav-hover">
+            <HashLink smooth to="/explore" className="nav-link nav-hover">
               Explore
-            </a>
+            </HashLink>
 
             <Link to="/signin" className="nav-link signin px-2">
-              Sign In
+              Login
             </Link>
 
             <Link to="/register" className="btn btn-danger register">

@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from './App';
 import LandingPage from "./LandingPage/LandingPage.js"
-
+import Register from "./Registered/Register.js";
+ 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <App />,
     children: [
       { path: "", element: <LandingPage /> },
+      {path:"register" , element: <Register/>}
     ]
   }
 ]);
