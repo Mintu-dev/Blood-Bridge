@@ -37,6 +37,9 @@ const UserSchema = new Schema(
       unique:true,
       required:true,
       lowercase:true,
+    },
+    RefreshToken:{
+      type:String
     }
   },
   { timestamps: true },
