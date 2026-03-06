@@ -8,7 +8,7 @@ function Features() {
 
    useEffect(() => {
     AOS.init({
-      duration: 1000,  
+      duration: 200,  
       once: false        
     });
 

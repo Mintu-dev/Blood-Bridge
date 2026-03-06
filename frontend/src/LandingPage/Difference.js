@@ -3,7 +3,7 @@ import React from "react";
 function Difference() {
   return (
     <div
-      className="hero-section"
+      className="hero-section mt-5 mb-5"
       style={{
         background:
           "linear-gradient(135deg, #fef2f2 0%, #fff1f2 50%, #fce7f3 100%)",
@@ -12,7 +12,7 @@ function Difference() {
     >
       <div data-aos="flip-left"
      data-aos-easing="ease-out-cubic"
-     data-aos-duration="2000" className="container">
+     data-aos-duration="2000" className="container mt-5">
         <div className="row mt-5">
           <div className="col mt-5 d-flex justify-content-center align-items-center mb-5">
             <div
@@ -32,7 +32,7 @@ function Difference() {
               <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4">
                 
                 <a
-                  href="/"
+                  href="/donarregister"
                   style={{
                     textDecoration: "none",
                     backgroundColor: "white",

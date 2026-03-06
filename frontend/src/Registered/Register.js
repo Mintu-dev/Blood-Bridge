@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import {
   Box,
   TextField,
@@ -17,6 +18,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 
 function Register() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
@@ -44,8 +46,12 @@ function Register() {
       bio,
     };
     try {
-      await axios.post("http://localhost:8000/api/v1/user/register", data);
+     const response = await axios.post("http://localhost:8000/api/v1/user/register", data);
       console.log("Register successfully");
+      if(response.data.success){
+        alert(response.data.message);
+      }
+      navigate("/login")
       setUsername("");
       setFullname("");
       setEmail("");
@@ -55,6 +61,11 @@ function Register() {
       setBio("");
     } catch (error) {
       console.log("Error", error);
+  if (error.response) {
+    alert(error.response.data.message);
+  } else {
+    alert("Something went wrong");
+}
     }
   };
 
@@ -80,33 +91,69 @@ function Register() {
     setBio(e.target.value);
   };
 
-  return (
-    <div
-      className="container d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
+return (
+  <Box
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      background:
+        "linear-gradient(135deg, #b71c1c, #e53935, #ff6f61)",
+      px: 2,
+    }}
+  >
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.15,
+          },
+        },
+      }}
+      style={{ width: "100%", maxWidth: "480px" }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        style={{ width: "100%", maxWidth: "450px" }}
+      <Paper
+        elevation={6}
+        sx={{
+          p: 4,
+          borderRadius: "24px",
+          background: "white",
+          boxShadow: "0 30px 70px rgba(0,0,0,0.25)",
+        }}
       >
-        <Paper
-          elevation={4}
-          sx={{
-            padding: 4,
-            borderRadius: "20px",
+        <motion.h2
+          variants={{
+            hidden: { opacity: 0, y: -40 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          style={{
+            textAlign: "center",
+            marginBottom: "25px",
+            color: "#c62828",
+            fontWeight: "bold",
           }}
         >
-          <h2 className="text-center mb-4">Registration Form</h2>
-          <form onSubmit={submit} autoComplete="off">
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2.5,
+          Join LifeConnect ❤️
+        </motion.h2>
+
+        <form onSubmit={submit} autoComplete="off">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2.5,
+            }}
+          >
+            {/* LEFT */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -60 },
+                visible: { opacity: 1, x: 0 },
               }}
-              autoComplete="off"
             >
               <TextField
                 label="Username"
@@ -115,7 +162,15 @@ function Register() {
                 onChange={userName}
                 value={username}
               />
+            </motion.div>
 
+            {/* RIGHT */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: 60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <TextField
                 label="Full Name"
                 fullWidth
@@ -123,7 +178,14 @@ function Register() {
                 onChange={fullName}
                 value={fullname}
               />
+            </motion.div>
 
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <TextField
                 label="Email"
                 fullWidth
@@ -131,8 +193,14 @@ function Register() {
                 value={email}
                 onChange={EMail}
               />
+            </motion.div>
 
-              {/* Password */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: 60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <FormControl variant="outlined" fullWidth size="small">
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
@@ -146,14 +214,24 @@ function Register() {
                         onClick={() => setShowPassword(!showPassword)}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
                 />
               </FormControl>
+            </motion.div>
 
-              {/* Gender */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <TextField
                 select
                 label="Select Gender"
@@ -163,13 +241,22 @@ function Register() {
                 onChange={GEnder}
               >
                 {genders.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </MenuItem>
                 ))}
               </TextField>
+            </motion.div>
 
-              {/* DOB */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: 60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <TextField
                 label="Date of Birth"
                 type="date"
@@ -179,8 +266,14 @@ function Register() {
                 value={dob}
                 onChange={Dob}
               />
+            </motion.div>
 
-              {/* Bio */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -60 },
+                visible: { opacity: 1, x: 0 },
+              }}
+            >
               <TextField
                 label="Bio"
                 multiline
@@ -190,26 +283,41 @@ function Register() {
                 value={bio}
                 onChange={Bio}
               />
+            </motion.div>
 
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 variant="contained"
                 size="medium"
                 type="submit"
+                fullWidth
                 sx={{
                   mt: 2,
                   borderRadius: "30px",
-                  paddingY: 1,
+                  paddingY: 1.2,
                   fontWeight: "bold",
+                  background:
+                    "linear-gradient(90deg,#c62828,#ff5252)",
+                  textTransform: "none",
+                  fontSize: "1rem",
                 }}
               >
                 Register
               </Button>
-            </Box>
-          </form>
-        </Paper>
-      </motion.div>
-    </div>
-  );
+            </motion.div>
+          </Box>
+        </form>
+      </Paper>
+    </motion.div>
+  </Box>
+);
 }
 
 export default Register;

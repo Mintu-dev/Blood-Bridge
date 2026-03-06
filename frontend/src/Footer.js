@@ -27,8 +27,8 @@ function Footer() {
             <h5 className="fw-bold mb-4">Quick Links</h5>
 
             <div className="d-flex flex-column gap-2">
-              <a href="/" className="footer-link">Find Donors</a>
-              <a href="/" className="footer-link">Become a Donor</a>
+              <a href="/explore" className="footer-link">Find Donors</a>
+              <a href="/donarregister" className="footer-link">Become a Donor</a>
               <a href="/" className="footer-link">Emergency</a>
             </div>
           </div>
