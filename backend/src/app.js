@@ -4,9 +4,10 @@ import express from "express";
 const app = express();
 import userRoutes from "./routes/user.routes.js";
 
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // 
+    origin: "http://localhost:3000", // 
     credentials: true,
   })
 );
