@@ -12,15 +12,16 @@ const donorSchema = new mongoose.Schema({
     required: true 
   },
   address: {
-    street: String,
-    city: String,
-    state: String,
-    pincode: String
+    street: { type: String, required: true } ,
+    city: { type: String, required: true }  ,
+    state: { type: String, required: true }  ,
+    pincode: { type: String, required: true }  ,
   },
   weight: { type: Number, required: true },
+  height: { type: Number, required: true },
+
   lastDonationDate: { type: Date },
-  anyMedicalConditions: [String],
-  isEligible: { type: Boolean, default: true },
+  anyMedicalConditions: [String] , 
 }, { timestamps: true });
 
 export default mongoose.model("Donor", donorSchema);
