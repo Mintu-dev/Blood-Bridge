@@ -1,139 +1,155 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  marginLeft: "auto",
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import axios from "axios";
 
 export default function Home() {
-  const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const [donars, setDonars] = useState([]);
+
+  const handler = async () => {
+    try {
+
+      const res = await axios.get(
+        "http://localhost:8000/api/v1/user/all-donar"
+      );
+
+      setDonars(res.data.data || []);
+
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    handler();
+  }, []);
 
   return (
     <div
       style={{
         minHeight: "100vh",
         padding: "50px 20px",
-        background: "linear-gradient(180deg, #ffe6e6, #ff5252)",
+        background: "linear-gradient(180deg,#ffe6e6,#ff5252)",
       }}
     >
+
       <div
-        className="container d-flex justify-content-center"
-        style={{ flexWrap: "wrap", gap: "20px" }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "20px"
+        }}
       >
-        <Card
-          sx={{
-            width: "100%",
-            maxWidth: 345,
-            flex: "1 1 300px",
-            background: "#fff5f5",
-            borderRadius: "16px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-          }}
-        >
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                R
-              </Avatar>
-            }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-          />
-          <CardMedia
-            component="img"
-            height="200"
-           image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI9lRck6miglY0SZF_BZ_sK829yiNskgYRUg&s"
-            alt="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            sx={{ objectFit: "cover" }}
-          />
-          <CardContent>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
+
+        {donars.map((donar) => (
+
+          <Card
+            key={donar._id}
+            sx={{
+              width: 320,
+              borderRadius: "16px",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+              position: "relative"
+            }}
+          >
+
+            {/* Blood Group Circle */}
+            <div
+              style={{
+                position: "absolute",
+                top: 120,
+                right: 15,
+                background: "#d32f2f",
+                color: "white",
+                width: "45px",
+                height: "45px",
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontWeight: "bold",
+                fontSize: "15px",
+                zIndex: 5
+              }}
             >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+              {donar.bloodGroup}
+            </div>
+
+            {/* Name + Date */}
+            <CardHeader
+              avatar={
+                <Avatar sx={{ bgcolor: red[500] }}>
+                  {donar.fullName ? donar.fullName[0].toUpperCase() : "U"}
+                </Avatar>
+              }
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={donar.fullName}
+              subheader={new Date(donar.createdAt).toDateString()}
+            />
+
+            {/* Image */}
+            <CardMedia
+              component="img"
+              height="200"
+              image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              alt="donor"
+              sx={{ objectFit: "cover" }}
+            />
+
+            {/* Details */}
             <CardContent>
-              <Typography sx={{ marginBottom: 2 }}>Method:</Typography>
-              <Typography sx={{ marginBottom: 2 }}>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron
-                and set aside for 10 minutes.
+
+              <Typography variant="body2">
+                📍 Address: {donar.address?.street}, {donar.address?.city}
               </Typography>
-              <Typography sx={{ marginBottom: 2 }}>
-                Heat oil in a (14- to 16-inch) paella pan or a large, deep
-                skillet over medium-high heat. Add chicken, shrimp and chorizo,
-                and cook, stirring occasionally until lightly browned, 6 to 8
-                minutes. Transfer shrimp to a large plate and set aside, leaving
-                chicken and chorizo in the pan. Add pimentón, bay leaves,
-                garlic, tomatoes, onion, salt and pepper, and cook, stirring
-                often until thickened and fragrant, about 10 minutes. Add
-                saffron broth and remaining 4 1/2 cups chicken broth; bring to
-                a boil.
+
+              <Typography variant="body2">
+                📮 Pincode: {donar.address?.pincode}
               </Typography>
-              <Typography sx={{ marginBottom: 2 }}>
-                Add rice and stir very gently to distribute. Top with artichokes
-                and peppers, and cook without stirring, until most of the liquid
-                is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
-                reserved shrimp and mussels, tucking them down into the rice,
-                and cook again without stirring, until mussels have opened and
-                rice is just tender, 5 to 7 minutes more. (Discard any mussels
-                that don&apos;t open.)
+
+              <Typography variant="body2">
+                👨 Gender: {donar.gender}
               </Typography>
-              <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then
-                serve.
+
+               
+              <Typography variant="body2">
+                📏 Height: {donar.height} cm
               </Typography>
+
+              <Typography variant="body2">
+                ⚖️ Weight: {donar.weight} kg
+              </Typography>
+
+              <Typography variant="body2">
+                🎂 DOB: {new Date(donar.dob).toLocaleDateString("en-GB")}
+              </Typography>
+
+              <Typography variant="body2">
+                🩺 Medical: {donar.anyMedicalConditions?.join(", ") || "None"}
+              </Typography>
+
             </CardContent>
-          </Collapse>
-        </Card>
+
+          </Card>
+
+        ))}
+
       </div>
+
     </div>
   );
 }

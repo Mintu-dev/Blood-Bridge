@@ -49,7 +49,9 @@ function Login() {
       if (response.data.success) {
         setIsError(false);
         setMessage(response.data.message);
+        alert(response.data.message);
       }
+      
       navigate("/explore")
 
       setUsername("");

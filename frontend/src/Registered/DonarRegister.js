@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Box,
   TextField,
   MenuItem,
   Button,
-  Paper,
-  Checkbox,
-  FormControlLabel
+  Paper
 } from "@mui/material";
 import { motion } from "framer-motion";
 
 function BloodDonorRegister() {
+
+  const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
+  const [height, setHeight] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
@@ -24,13 +28,28 @@ function BloodDonorRegister() {
   const [weight, setWeight] = useState("");
   const [lastDonationDate, setLastDonationDate] = useState("");
   const [medicalConditions, setMedicalConditions] = useState("");
-  const [isEligible, setIsEligible] = useState(true);
 
-  const genders = ["Male", "Female", "Rather not to disclose"];
+  const genders = ["Male", "Female", "Other"];
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // frontend validation
+    if (
+      !fullName ||
+      !email ||
+      !phone ||
+      !gender ||
+      !dob ||
+      !bloodGroup ||
+      !weight ||
+      !height
+    ) {
+      alert("Please fill all required fields");
+      return;
+    }
+
     const donorData = {
       fullName,
       email,
@@ -38,13 +57,40 @@ function BloodDonorRegister() {
       gender,
       dob,
       bloodGroup,
-      address: { street, city, state, pincode },
-      weight,
-      lastDonationDate,
-      anyMedicalConditions: medicalConditions,
-      isEligible,
+      address: {
+        street,
+        city,
+        state,
+        pincode
+      },
+      weight: Number(weight),
+      height: Number(height),
+      lastDonationDate: lastDonationDate || null,
+      anyMedicalConditions: medicalConditions ? [medicalConditions] : []
     };
-    console.log(donorData);
+
+    try {
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/user/register-Donar",
+        donorData
+      );
+
+      if (response.data.success) {
+        alert(response.data.message);
+        navigate("/explore");
+      }
+
+    } catch (error) {
+
+      console.log("Error:", error);
+
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert("Server error occurred");
+      }
+    }
   };
 
   return (
@@ -54,8 +100,7 @@ function BloodDonorRegister() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background:
-          "linear-gradient(135deg, #8e0000, #c62828, #ff5252)",
+        background: "linear-gradient(135deg, #8e0000, #c62828, #ff5252)",
         px: 2,
       }}
     >
@@ -75,15 +120,12 @@ function BloodDonorRegister() {
             borderRadius: "24px",
             background: "white",
             boxShadow: "0 30px 70px rgba(0,0,0,0.25)",
-             marginTop:"30px",
-              marginBottom:"30px",
+            marginTop: "30px",
+            marginBottom: "30px",
           }}
         >
-          <motion.h2
-            variants={{
-              hidden: { opacity: 0, y: -40 },
-              visible: { opacity: 1, y: 0 },
-            }}
+
+          <h2
             style={{
               textAlign: "center",
               marginBottom: "25px",
@@ -92,207 +134,171 @@ function BloodDonorRegister() {
             }}
           >
             Join LifeConnect as Donor 🩸
-          </motion.h2>
+          </h2>
 
           <form onSubmit={handleSubmit} autoComplete="off">
+
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
 
-              {/* Full Name */}
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Full Name"
-                  fullWidth
-                  size="small"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              </motion.div>
+              <TextField
+                label="Full Name"
+                required
+                fullWidth
+                size="small"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
 
-              {/* Email */}
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Email"
-                  fullWidth
-                  size="small"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </motion.div>
+              <TextField
+                label="Email"
+                required
+                fullWidth
+                size="small"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-              {/* Phone */}
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Phone Number"
-                  fullWidth
-                  size="small"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </motion.div>
+              <TextField
+                label="Phone Number"
+                required
+                fullWidth
+                size="small"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
 
-              {/* Gender */}
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  select
-                  label="Gender"
-                  fullWidth
-                  size="small"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  {genders.map((g) => (
-                    <MenuItem key={g} value={g}>{g}</MenuItem>
-                  ))}
-                </TextField>
-              </motion.div>
-
-              {/* DOB */}
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Date of Birth"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  size="small"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                />
-              </motion.div>
-
-              {/* Blood Group */}
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  select
-                  label="Blood Group"
-                  fullWidth
-                  size="small"
-                  value={bloodGroup}
-                  onChange={(e) => setBloodGroup(e.target.value)}
-                >
-                  {bloodGroups.map((bg) => (
-                    <MenuItem key={bg} value={bg}>{bg}</MenuItem>
-                  ))}
-                </TextField>
-              </motion.div>
-
-              {/* Weight */}
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Weight (kg)"
-                  type="number"
-                  fullWidth
-                  size="small"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                />
-              </motion.div>
-
-              {/* Address */}
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Street"
-                  fullWidth
-                  size="small"
-                  value={street}
-                  onChange={(e) => setStreet(e.target.value)}
-                />
-              </motion.div>
-
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="City"
-                  fullWidth
-                  size="small"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-              </motion.div>
-
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="State"
-                  fullWidth
-                  size="small"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                />
-              </motion.div>
-
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Pincode"
-                  fullWidth
-                  size="small"
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
-                />
-              </motion.div>
-
-              {/* Last Donation Date */}
-              <motion.div variants={{ hidden:{opacity:0,x:50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Last Donation Date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  size="small"
-                  value={lastDonationDate}
-                  onChange={(e) => setLastDonationDate(e.target.value)}
-                />
-              </motion.div>
-
-              {/* Medical Conditions */}
-              <motion.div variants={{ hidden:{opacity:0,x:-50}, visible:{opacity:1,x:0} }}>
-                <TextField
-                  label="Medical Conditions"
-                  multiline
-                  rows={3}
-                  fullWidth
-                  size="small"
-                  value={medicalConditions}
-                  onChange={(e) => setMedicalConditions(e.target.value)}
-                />
-              </motion.div>
-
-              {/* Is Eligible */}
-              <motion.div variants={{ hidden:{opacity:0,y:40}, visible:{opacity:1,y:0} }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={isEligible}
-                      onChange={(e) => setIsEligible(e.target.checked)}
-                    />
-                  }
-                  label="Eligible for Donation"
-                />
-              </motion.div>
-
-              {/* Submit Button */}
-              <motion.div
-                variants={{ hidden:{opacity:0,y:40}, visible:{opacity:1,y:0} }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <TextField
+                select
+                label="Gender"
+                required
+                fullWidth
+                size="small"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
               >
-                <Button
-                  variant="contained"
-                  type="submit"
-                  fullWidth
-                  sx={{
-                    mt: 2,
-                    borderRadius: "30px",
-                    paddingY: 1.2,
-                    fontWeight: "bold",
-                    background: "linear-gradient(90deg,#b71c1c,#ff5252)",
-                    textTransform: "none",
-                    fontSize: "1rem",
-                  }}
-                >
-                  Register as Donor
-                </Button>
-              </motion.div>
+                {genders.map((g) => (
+                  <MenuItem key={g} value={g}>{g}</MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                label="Date of Birth"
+                type="date"
+                required
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                size="small"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+              />
+
+              <TextField
+                select
+                label="Blood Group"
+                required
+                fullWidth
+                size="small"
+                value={bloodGroup}
+                onChange={(e) => setBloodGroup(e.target.value)}
+              >
+                {bloodGroups.map((bg) => (
+                  <MenuItem key={bg} value={bg}>{bg}</MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                label="Weight (kg)"
+                type="number"
+                required
+                fullWidth
+                size="small"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+              />
+
+              <TextField
+                label="Height (cm)"
+                type="number"
+                required
+                fullWidth
+                size="small"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+              />
+
+              <TextField
+                label="Street"
+                fullWidth
+                size="small"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+              />
+
+              <TextField
+                label="City"
+                fullWidth
+                size="small"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+
+              <TextField
+                label="State"
+                fullWidth
+                size="small"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
+
+              <TextField
+                label="Pincode"
+                fullWidth
+                size="small"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
+              />
+
+              <TextField
+                label="Last Donation Date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                size="small"
+                value={lastDonationDate}
+                onChange={(e) => setLastDonationDate(e.target.value)}
+              />
+
+              <TextField
+                label="Medical Conditions"
+                multiline
+                rows={3}
+                fullWidth
+                size="small"
+                value={medicalConditions}
+                onChange={(e) => setMedicalConditions(e.target.value)}
+              />
+
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  borderRadius: "30px",
+                  paddingY: 1.2,
+                  fontWeight: "bold",
+                  background: "linear-gradient(90deg,#b71c1c,#ff5252)",
+                  textTransform: "none",
+                  fontSize: "1rem",
+                }}
+              >
+                Register as Donor
+              </Button>
 
             </Box>
+
           </form>
+
         </Paper>
       </motion.div>
     </Box>
