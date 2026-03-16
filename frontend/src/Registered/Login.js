@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom"
 import {useNavigate} from "react-router-dom";
+import Loader from "../Loader.js";
 import {
   Box,
   TextField,
@@ -26,6 +27,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [loader , setLoader] = useState(false);
 
   const usernameHandler = (e) => {
     setUsername(e.target.value);
@@ -41,11 +43,12 @@ function Login() {
     const data = { username, password };
 
     try {
+      setLoader(true)
       const response = await axios.post(
         "http://localhost:8000/api/v1/user/login-user",
         data
       );
-
+      setLoader(false)
       if (response.data.success) {
         setIsError(false);
         setMessage(response.data.message);
@@ -66,7 +69,10 @@ function Login() {
       );
     }
   };
-
+  
+  if (loader) {
+  return <Loader />;
+}
   return (
     <form onSubmit={submitHandler}>
       <Box
@@ -149,7 +155,7 @@ function Login() {
             </Typography>
           )}
 
-          <Box data-aos="zoom-in-up" data-aos-delay="1000">
+          <Box data-aos="zoom-in-up" data-aos-delay="500">
             <Button
               fullWidth
               sx={{
@@ -175,7 +181,6 @@ function Login() {
           <Typography
             align="center"
             data-aos="fade-up"
-            data-aos-delay="1200"
             sx={{ mt: 3, fontSize: "0.9rem" }}
           >
             Don’t have an account?{" "}

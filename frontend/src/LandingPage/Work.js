@@ -51,9 +51,10 @@ function Work() {
 
         {/* Cards Section */}
         <div data-aos="flip-left" className="row justify-content-center">
-
+             
           {/* Card 1 */}
           <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
+           <a href="register" style={{textDecoration:"none"}}>
             <div
               className="card mb-4 shadow-sm"
               style={{ width: "18rem", borderRadius: "20px", border: "none" }}
@@ -77,10 +78,13 @@ function Work() {
                 </p>
               </div>
             </div>
+            </a>
           </div>
-
+                  
           {/* Card 2 */}
+           
           <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
+          <a href="explore" style={{textDecoration:"none"}}>
             <div
               className="card mb-4 shadow-sm"
               style={{ width: "18rem", borderRadius: "20px", border: "none" }}
@@ -104,10 +108,13 @@ function Work() {
                 </p>
               </div>
             </div>
+             </a>
           </div>
-
+                 
           {/* Card 3 */}
+         
           <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
+           <a href="donarregister" style={{textDecoration:"none"}}>
             <div
               className="card mb-4 shadow-sm"
               style={{ width: "18rem", borderRadius: "20px", border: "none" }}
@@ -130,8 +137,9 @@ function Work() {
                 </p>
               </div>
             </div>
+            </a>
           </div>
-
+                  
         </div>
       </div>
     </div>
