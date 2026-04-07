@@ -66,5 +66,19 @@ const getDonar = asyncHandler(async(req,res)=>{
     .status(201)
     .json( new ApiResponse(200 , donar));
 })
+function escapeRegex(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+const searchType = asyncHandler(async (req, res) => {
+  const { type } = req.query;
 
-export { registerDonor , getDonar };
+  const safeType = escapeRegex(type); // ✅ fix
+
+  const find = await Donar.find({
+    type: { $regex: safeType, $options: "i" }
+  });
+
+  return res.status(200).json(find);
+});
+
+export { registerDonor , getDonar, searchType };
