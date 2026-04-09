@@ -7,10 +7,10 @@ const router = Router();
 
 router.route("/register-user").post(registerUser);
 router.route("/login-user").post(loginUser);
-router.route("/logout-user").post( verifyJWT , logoutUser);
 router.route("/register-Donar").post(registerDonor);
 router.route("/all-donar").get(getDonar);
 router.route("/search").get(searchType);
+router.route("/logout").post(logoutUser);
 
 
 export default router;

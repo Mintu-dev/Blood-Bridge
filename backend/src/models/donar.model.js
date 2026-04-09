@@ -20,7 +20,7 @@ const donorSchema = new mongoose.Schema({
   weight: { type: Number, required: true },
   height: { type: Number, required: true },
 
-  lastDonationDate: { type: Date },
+  lastDonationDate: { type: Date  , required:true},
   anyMedicalConditions: [String] , 
 }, { timestamps: true });
 

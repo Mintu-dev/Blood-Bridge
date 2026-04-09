@@ -81,9 +81,9 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     const option = {
         httpOnly:true,
-        secure:true,
+        secure:false,
+        sameSite: "lax",
     }
-
     return res
     .status(200)
     .cookie("AccessToken" , AccessToken , option)
@@ -99,32 +99,30 @@ const loginUser = asyncHandler(async(req,res)=>{
 })
 
 const logoutUser = asyncHandler(async (req, res) => {
-  //logout ke baad update kr rahe hai refreshToken ko
-  await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $unset: {
-        RefreshToken: 1, // this removes the field from document
-      },
-    },
-    {
-      new: true,
-    },
-  );
-  //frontend se cookie edit na paiye || cookie security policy.
-  let option = {
+  console.log("Cookies:", req.cookies);
+
+  // Optional: refreshToken database se remove karna hai to userId check karo
+  if (req.user?._id) {
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { $unset: { RefreshToken: 1 } },
+      { new: true }
+    );
+  }
+
+  // Cookie options for localhost
+  const option = {
     httpOnly: true,
-    secure: true,
+    secure: false,    // localhost
+    sameSite: "lax",  // cross-origin allow
   };
 
-  return res
+  res
     .status(200)
     .clearCookie("AccessToken", option)
     .clearCookie("RefreshToken", option)
-    .json(new ApiResponse(200, {}, "Logout Successfully"));
+    .json({ status: 200, message: "Logout Successfully" });
 });
-
-
 export {
     registerUser,
     loginUser,
