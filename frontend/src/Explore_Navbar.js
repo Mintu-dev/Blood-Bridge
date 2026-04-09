@@ -1,13 +1,15 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
 
-function Explore_Navbar({setResult}) {
+function Explore_Navbar({ setResult }) {
+  const [search, setSearch] = useState("");
+  const [ isLoggedIn ,setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  const [search , setSearch] = useState("");
   const closeNavbar = () => {
     const navbar = document.getElementById("navbarNav");
     if (navbar && navbar.classList.contains("show")) {
@@ -15,21 +17,47 @@ function Explore_Navbar({setResult}) {
       bsCollapse.hide();
     }
   };
+  React.useEffect(() => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token); // true/false automatically
+      
+    }, []);
 
-    const handleSearch = async(value)=>{
-      setSearch(value);
-      if(value.trim()===""){
-        setResult(undefined);
-        return;
+  const handleLogout = async () => {
+      try {
+        await axios.post(
+          "http://localhost:8000/api/v1/user/logout",
+          {},
+          { withCredentials: true }
+        );
+  
+        // clear storage
+        localStorage.removeItem("token");
+  
+        // update UI instantly
+        setIsLoggedIn(false);
+  
+        navigate("/login");
+      } catch (error) {
+        console.log("Logout error", error);
       }
-        try{
-          const res = await axios.get(`http://localhost:8000/api/v1/user/search?type=${value}`);
-          setResult(res.data);
+    };
 
-        }catch(err){
-          console.log(err);
-        }
+  const handleSearch = async (value) => {
+    setSearch(value);
+    if (value.trim() === "") {
+      setResult(undefined);
+      return;
     }
+    try {
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/search?type=${encodeURIComponent(value)}`, //yehe pe encodedURIComponent dalne pe + wala value le raha hai
+      );
+      setResult(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg  bg-white py-3 sticky-top">
@@ -55,40 +83,51 @@ function Explore_Navbar({setResult}) {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-          <div className="ms-5 flex-grow-1">
-         <form className="d-flex ms-5 flex-grow-1" role="search" onSubmit={(e)=>e.preventDefault()}>
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search your type"
-                value={search}
-                onChange={((e)=> handleSearch(e.target.value))}
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-            </div>
+        <form
+          className="d-flex ms-5 flex-grow-1"
+          role="search"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <input
+            className="form-control me-2"
+            type="search"
+            placeholder="Search your type"
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+            aria-label="Search"
+          />
+          <button className="btn btn-outline-success" type="submit">
+            Search
+          </button>
+        </form>
+
         {/* Collapsible Content */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
-
-            <Link
-              to="/login"
-              className="nav-link signin px-2"
-              onClick={closeNavbar}
-            >
-              Login
-            </Link>
-
-            <Link
-              to="/register"
-              className="btn btn-danger register"
-              onClick={closeNavbar}
-            >
-              Register
-            </Link>
+            {/* CONDITIONAL UI */}
+                       {!isLoggedIn ? (
+                         <>
+                           <Link to="/login" className="nav-link" onClick={closeNavbar}>
+                             Login
+                           </Link>
+           
+                           <Link to="/register" className="btn btn-danger" onClick={closeNavbar}>
+                             Register
+                           </Link>
+                         </>
+                       ) : (
+                         <>
+                           {/* Profile */}
+                           <Link to="/profile" className="nav-link fs-2">
+                             <i className="fa-solid fa-circle-user"></i>
+                           </Link>
+           
+                           {/* Logout */}
+                           <button className="btn btn-danger" onClick={handleLogout}>
+                             Logout
+                           </button>
+                         </>
+                       )}
           </div>
         </div>
       </div>

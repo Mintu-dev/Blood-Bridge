@@ -1,9 +1,6 @@
-import { useOutletContext } from "react-router-dom";
 import Home from "./Home";
 
-function Explore() {
-  const { result } = useOutletContext();
-
+function Explore({ result }) {
   return <Home result={result} />;
 }
 

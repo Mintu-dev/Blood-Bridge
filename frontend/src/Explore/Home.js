@@ -25,7 +25,7 @@ export default function Home({ result }) {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // ✅ always stop loader
+      setLoading(false); //  always stop loader
     }
   };
 
@@ -33,9 +33,10 @@ export default function Home({ result }) {
     handler();
   }, []);
 
-  // ✅ FIXED LOGIC
-  const isSearching = Array.isArray(result); 
-  const dataToShow = isSearching ? result : donars;
+  // FIXED LOGIC
+ const isSearching = Array.isArray(result);
+const dataToShow = isSearching ? result : donars;
+
 
   if (loading) {
     return <Loader />;
@@ -79,7 +80,7 @@ export default function Home({ result }) {
         </div>
       </div>
 
-      {/* ✅ NO RESULT MESSAGE */}
+      {/*  NO RESULT MESSAGE */}
       {isSearching && dataToShow.length === 0 ? (
         <h3 style={{ textAlign: "center", color: "white" }}>
           No donor found 😢

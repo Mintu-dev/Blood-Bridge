@@ -1,19 +1,31 @@
-import Navbar from "./Navbar.js"
-import react , {useState} from "react";
-import Footer from "./Footer.js"
-import {useLocation} from "react-router-dom";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import Navbar from "./Navbar";
+import Explore_Navbar from "./Explore_Navbar";
+import Footer from "./Footer";
+import Explore from "./Explore/Explore";
 import {Outlet} from "react-router-dom";
-import Explore_Navbar from "./Explore_Navbar.js"
 
 function App() {
   const location = useLocation();
-  const [result , setResult] =  ([]);
+  const [result, setResult] = useState(undefined);
+
+  const isExplore = location.pathname === "/explore";
 
   return (
     <>
-      {location.pathname === "/explore" ? <Explore_Navbar setResult={setResult}/> : <Navbar />}
-      <Outlet context={result}/>
-      <Footer/>
+      {isExplore
+        ? <Explore_Navbar setResult={setResult} />
+        : <Navbar />
+      }
+
+      {/*  DIRECT PASS */}
+      {isExplore
+        ? <Explore result={result} />
+        : <Outlet />
+      }
+
+      <Footer />
     </>
   );
 }

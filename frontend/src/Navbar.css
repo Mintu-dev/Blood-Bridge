@@ -19,7 +19,15 @@
 .life-text {
   color: black;
 }
+@media (max-width: 287px) {
+  .life-text {
+    font-size: 20px;
+  }
 
+  .connect-text {
+    font-size: 20px;
+  }
+}
 .connect-text {
   color: red;
 }

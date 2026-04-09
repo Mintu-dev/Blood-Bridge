@@ -28,6 +28,7 @@ function Login() {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [loader , setLoader] = useState(false);
+ 
 
   const usernameHandler = (e) => {
     setUsername(e.target.value);
@@ -54,9 +55,10 @@ function Login() {
         setMessage(response.data.message);
         alert(response.data.message);
       }
-      
+      localStorage.setItem("token", response.data.accessToken);
       navigate("/explore")
 
+      window.location.reload();//reload kr deta hai.
       setUsername("");
       setPassword("");
 
