@@ -14,14 +14,14 @@ const donorSchema = new mongoose.Schema({
   address: {
     street: { type: String, required: true } ,
     city: { type: String, required: true }  ,
-    state: { type: String, required: true }  ,
+    state: { type: String, required: true } ,
     pincode: { type: String, required: true }  ,
   },
   weight: { type: Number, required: true },
   height: { type: Number, required: true },
 
-  lastDonationDate: { type: Date  , required:true},
-  anyMedicalConditions: [String] , 
+  lastDonationDate: { type: Date},
+  anyMedicalConditions: [String],
 }, { timestamps: true });
 
 export default mongoose.model("Donor", donorSchema);

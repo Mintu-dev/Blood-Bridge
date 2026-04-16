@@ -4,7 +4,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const registerDonor = asyncHandler(async (req, res) => {
-
   const {
     fullName,
     email,
@@ -18,13 +17,14 @@ const registerDonor = asyncHandler(async (req, res) => {
     lastDonationDate,
     anyMedicalConditions
   } = req.body;
-  console.log("ha data aagya sara from se")
 
   // check existing donor
   const existingDonor = await Donar.findOne({ email });
 
   if (existingDonor) {
-    throw new ApiError(400, "Donor already exists with this email");
+    return res
+    .status(409)
+    .json({message:"Donar already exist!" , success:false})
   }
 
   // create donor
@@ -43,16 +43,14 @@ const registerDonor = asyncHandler(async (req, res) => {
   });
 
   if (!newDonor) {
-    throw new ApiError(500, "Failed to register donor");
+    return res
+    .status(500)
+    .json({message:"Failed to registered donar" , success:false})
   }
 
 
   return res.status(201).json(
-    new ApiResponse(
-      201,
-      newDonor,
-      "Donor registered successfully"
-    )
+   {message:"Donar registered successfully" , success:true ,newDonor}
   );
 });
 
@@ -84,5 +82,7 @@ const searchType = asyncHandler(async (req, res) => {
 
   return res.status(200).json(find);
 });
+
+
 
 export { registerDonor , getDonar, searchType };

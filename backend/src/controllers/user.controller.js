@@ -26,14 +26,18 @@ const registerUser = asyncHandler(async (req,res)=>{
     console.log(req.body);
 
     if(!(fullname && email && username && password)){
-        throw new ApiError(400 , "Fill all the details");
+        return res.status(409).
+        json({message:"All fields are required" , success:falsa})
     }
+ 
 
     const existingUser = await User.findOne({
         $or:[{email} , {username}]
     });
     if(existingUser){
-        throw new ApiError(400 , "User already exist")
+       return res
+       .status(409)
+       .json({message:"User already exist" , success:false})
     }
 
      const user = await User.create({
@@ -48,28 +52,36 @@ const registerUser = asyncHandler(async (req,res)=>{
 
     const newUser = await User.findById(user._id);
     if(!newUser){
-        throw new ApiError(400 , "Error while registering the user!!")
+        return res
+        .status(404)
+        .json({message:"Error while registering" , success:falsa})
     }
 
     return res
     .status(201)
-    .json(new ApiResponse(201 , newUser , "Registered successfully!"));
+    .json({message:"Registered successfully" , success:true});
 })
 
 const loginUser = asyncHandler(async(req,res)=>{
-    const {username , password} = req.body;
+    const {username , password , fullname} = req.body;
     if(!(username && password)){
-        throw new ApiError(400 , "Both fields are required");
+        return res
+        .status(409)
+        .json({message:"Both field are required" , success:false});
     }
 
     const user = await User.findOne({username});
     if(!user){
-        throw new ApiError(404 , "Username not found!");
+        return res
+        .status(409)
+        .json({message:"Username not found!" , success:false});
     }
 
     const isValid = await user.isPasswordCorrect(password);
     if(!isValid){
-        throw new ApiError(401 , "Password is incorrect");
+        return res
+        .status(409)
+        .json({message:"Password is incorrect" , success:false});
     }
 
     const {AccessToken , RefreshToken} = await generateAccessandRefreshTokens(user._id);
@@ -84,22 +96,20 @@ const loginUser = asyncHandler(async(req,res)=>{
         secure:false,
         sameSite: "lax",
     }
-    return res
-    .status(200)
-    .cookie("AccessToken" , AccessToken , option)
-    .cookie("RefreshToken" , RefreshToken , option)
-    .json(
-        new ApiResponse(200,
-           { user:loggedInUser,AccessToken,RefreshToken}
-           , "User login successfully"
-        )
-    )
+   return res
+  .status(200)
+  .cookie("AccessToken", AccessToken, option)
+  .cookie("RefreshToken", RefreshToken, option)
+  .json({
+    success: true,
+    message: "User login successfully",
+    user: loggedInUser,
+  });
 
 
 })
 
 const logoutUser = asyncHandler(async (req, res) => {
-  console.log("Cookies:", req.cookies);
 
   // Optional: refreshToken database se remove karna hai to userId check karo
   if (req.user?._id) {
@@ -123,8 +133,61 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("RefreshToken", option)
     .json({ status: 200, message: "Logout Successfully" });
 });
+
+const Profile = asyncHandler(async(req,res)=>{
+   res.status(200).json({user:req.user});
+})
+
+const ChangePassword = asyncHandler(async(req,res)=>{
+    const {oldPassword , newPassword} = req.body;
+    const user = await User.findById(req.user?._id);
+    
+    const correctPassword = await user.isPasswordCorrect(oldPassword);
+
+     if(!correctPassword){
+        throw new ApiError(401 , "Password is incorrect");
+    }
+
+    user.password = newPassword;
+    await user.save({validateBeforeSave:false});
+
+    return res
+    .status(201)
+    .json(new ApiResponse(200 , {} , "Password Updated Successfully"))
+})
+
+const EditFullName = asyncHandler(async(req,res)=>{
+    const {currentName , newName} = req.body;
+
+    const user = await User.findById(req.user?._id);
+
+    user.fullname = newName;
+    await user.save({validateBeforeSave:false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(201 , {} , "Name Updated Successfully"));
+})
+
+const EditBio = asyncHandler(async(req,res)=>{
+  const {bio} = req.body;
+
+  const user = await User.findById(req.user?._id);
+  user.bio = bio;
+  await user.save({validateBeforeSave:false})
+
+   return res
+    .status(200)
+    .json(new ApiResponse(200 , {} , "Bio Updated Successfully"));
+  
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
+    Profile,
+    ChangePassword,
+    EditFullName,
+    EditBio
 }
