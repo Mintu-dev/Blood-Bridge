@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { handleSuccess, handleError } from "../utils/Error&SuccessHandler.js";
 import {
   Box,
   TextField,
@@ -35,7 +36,6 @@ function BloodDonorRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // frontend validation
     if (
       !fullName ||
       !email ||
@@ -46,7 +46,7 @@ function BloodDonorRegister() {
       !weight ||
       !height
     ) {
-      alert("Please fill all required fields");
+      handleError("Please fill all required fields");
       return;
     }
 
@@ -76,8 +76,11 @@ function BloodDonorRegister() {
         donorData
       );
 
+      console.log(response);
+      console.log(response.data);
+
       if (response.data.success) {
-        alert(response.data.message);
+        handleSuccess(response.data.message || "Success");
         navigate("/explore");
       }
 
@@ -86,9 +89,9 @@ function BloodDonorRegister() {
       console.log("Error:", error);
 
       if (error.response) {
-        alert(error.response.data.message);
+        handleError(error.response.data.message || "Something went wrong");
       } else {
-        alert("Server error occurred");
+        handleError("Server error occurred");
       }
     }
   };
@@ -136,147 +139,64 @@ function BloodDonorRegister() {
             Join LifeConnect as Donor 🩸
           </h2>
 
-          <form onSubmit={handleSubmit} autoComplete="off">
+          {/*  IMPORTANT */}
+          <form onSubmit={handleSubmit} autoComplete="off" noValidate>
 
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
 
-              <TextField
-                label="Full Name"
-                required
-                fullWidth
-                size="small"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
+              <TextField label="Full Name"  fullWidth size="small"
+                value={fullName} onChange={(e) => setFullName(e.target.value)} />
 
-              <TextField
-                label="Email"
-                required
-                fullWidth
-                size="small"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <TextField label="Email"  fullWidth size="small"
+                value={email} onChange={(e) => setEmail(e.target.value)} />
 
-              <TextField
-                label="Phone Number"
-                required
-                fullWidth
-                size="small"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              <TextField label="Phone Number"  fullWidth size="small"
+                value={phone} onChange={(e) => setPhone(e.target.value)} />
 
-              <TextField
-                select
-                label="Gender"
-                required
-                fullWidth
-                size="small"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-              >
+              <TextField select label="Gender"  fullWidth size="small"
+                value={gender} onChange={(e) => setGender(e.target.value)}>
                 {genders.map((g) => (
                   <MenuItem key={g} value={g}>{g}</MenuItem>
                 ))}
               </TextField>
 
-              <TextField
-                label="Date of Birth"
-                type="date"
-                required
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                size="small"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-              />
+              <TextField label="Date of Birth" type="date" 
+                InputLabelProps={{ shrink: true }} fullWidth size="small"
+                value={dob} onChange={(e) => setDob(e.target.value)} />
 
-              <TextField
-                select
-                label="Blood Group"
-                required
-                fullWidth
-                size="small"
-                value={bloodGroup}
-                onChange={(e) => setBloodGroup(e.target.value)}
-              >
+              <TextField select label="Blood Group"  fullWidth size="small"
+                value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)}>
                 {bloodGroups.map((bg) => (
                   <MenuItem key={bg} value={bg}>{bg}</MenuItem>
                 ))}
               </TextField>
 
-              <TextField
-                label="Weight (kg)"
-                type="number"
-                required
-                fullWidth
-                size="small"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-              />
+              <TextField label="Weight (kg)" type="number"  fullWidth size="small"
+                value={weight} onChange={(e) => setWeight(e.target.value)} />
 
-              <TextField
-                label="Height (cm)"
-                type="number"
-                required
-                fullWidth
-                size="small"
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-              />
+              <TextField label="Height (cm)" type="number"  fullWidth size="small"
+                value={height} onChange={(e) => setHeight(e.target.value)} />
 
-              <TextField
-                label="Street"
-                fullWidth
-                size="small"
-                value={street}
-                onChange={(e) => setStreet(e.target.value)}
-              />
+              <TextField label="Street" fullWidth size="small"
+                value={street} onChange={(e) => setStreet(e.target.value)} />
 
-              <TextField
-                label="City"
-                fullWidth
-                size="small"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
+              <TextField label="City" fullWidth size="small"
+                value={city} onChange={(e) => setCity(e.target.value)} />
 
-              <TextField
-                label="State"
-                fullWidth
-                size="small"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              />
+              <TextField label="State" fullWidth size="small"
+                value={state} onChange={(e) => setState(e.target.value)} />
 
-              <TextField
-                label="Pincode"
-                fullWidth
-                size="small"
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-              />
+              <TextField label="Pincode" fullWidth size="small"
+                value={pincode} onChange={(e) => setPincode(e.target.value)} />
 
-              <TextField
-                label="Last Donation Date"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                size="small"
-                value={lastDonationDate}
-                onChange={(e) => setLastDonationDate(e.target.value)}
-              />
+              <TextField label="Last Donation Date" type="date"
+                InputLabelProps={{ shrink: true }} fullWidth size="small"
+                value={lastDonationDate} onChange={(e) => setLastDonationDate(e.target.value)} />
 
-              <TextField
-                label="Medical Conditions"
-                multiline
-                rows={3}
-                fullWidth
-                size="small"
+              <TextField label="Medical Conditions" multiline rows={3}
+                fullWidth size="small"
                 value={medicalConditions}
-                onChange={(e) => setMedicalConditions(e.target.value)}
-              />
+                onChange={(e) => setMedicalConditions(e.target.value)} />
 
               <Button
                 variant="contained"

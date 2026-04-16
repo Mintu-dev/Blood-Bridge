@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {handleSuccess , handleError} from "../utils/Error&SuccessHandler.js";
+import Loader from "../Loader.js";
 import {
   Box,
   TextField,
@@ -19,7 +22,8 @@ import axios from "axios";
 
 function Register() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [loader, setLoader] = useState(false);
+  const [showPassword , setShowPassword] = React.useState(false);
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -46,11 +50,11 @@ function Register() {
       bio,
     };
     try {
-     const response = await axios.post("http://localhost:8000/api/v1/user/register", data);
+      setLoader(true);
+     const response = await axios.post("http://localhost:8000/api/v1/user/register-user", data);
       console.log("Register successfully");
-      if(response.data.success){
-        alert(response.data.message);
-      }
+       setLoader(false);
+      handleSuccess(response.data.message);
       navigate("/login")
       setUsername("");
       setFullname("");
@@ -59,13 +63,10 @@ function Register() {
       setGender("");
       setDob("");
       setBio("");
+     
     } catch (error) {
       console.log("Error", error);
-  if (error.response) {
-    alert(error.response.data.message);
-  } else {
-    alert("Something went wrong");
-}
+  handleError(error.response.data.message);
     }
   };
 
@@ -90,8 +91,9 @@ function Register() {
   const Bio = (e) => {
     setBio(e.target.value);
   };
-
+{loader && <Loader />}
 return (
+  
   <Box
     sx={{
       minHeight: "100vh",
@@ -196,35 +198,31 @@ return (
             </motion.div>
 
             <motion.div
-              variants={{
-                hidden: { opacity: 0, x: 60 },
-                visible: { opacity: 1, x: 0 },
-              }}
-            >
-              <FormControl variant="outlined" fullWidth size="small">
-                <InputLabel>Password</InputLabel>
-                <OutlinedInput
-                  type={showPassword ? "text" : "password"}
-                  label="Password"
-                  value={password}
-                  onChange={Password}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </motion.div>
+  variants={{
+    hidden: { opacity: 0, x: 60 },
+    visible: { opacity: 1, x: 0 },
+  }}
+>
+  <FormControl variant="outlined" fullWidth size="small">
+    <InputLabel>Password</InputLabel>
+    <OutlinedInput
+      type={showPassword ? "text" : "password"}
+      label="Password"
+      value={password}
+      onChange={Password}
+      endAdornment={
+        <InputAdornment position="end">
+          <IconButton
+            onClick={() => setShowPassword(!showPassword)}
+            edge="end"
+          >
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      }
+    />
+  </FormControl>
+</motion.div>
 
             <motion.div
               variants={{

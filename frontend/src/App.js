@@ -5,6 +5,8 @@ import Explore_Navbar from "./Explore_Navbar";
 import Footer from "./Footer";
 import Explore from "./Explore/Explore";
 import {Outlet} from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -26,6 +28,8 @@ function App() {
       }
 
       <Footer />
+
+        <ToastContainer />
     </>
   );
 }

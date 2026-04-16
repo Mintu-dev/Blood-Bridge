@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
+import {handleSuccess , handleError} from "./utils/Error&SuccessHandler.js";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -11,9 +12,22 @@ function Navbar() {
 
   //  Check login on load
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); // true/false automatically
-    
+    const checkLogin = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/v1/user/profile",
+          { withCredentials: true },
+        );
+
+        if (res?.data?.user) {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkLogin();
   }, []);
 
   const closeNavbar = () => {
@@ -30,15 +44,16 @@ function Navbar() {
       await axios.post(
         "http://localhost:8000/api/v1/user/logout",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
+      handleSuccess("Logout Successfully");
 
       // clear storage
       localStorage.removeItem("token");
 
       // update UI instantly
       setIsLoggedIn(false);
-
+       
       navigate("/login");
     } catch (error) {
       console.log("Logout error", error);
@@ -48,7 +63,6 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-white py-3 sticky-top">
       <div className="container">
-
         {/* Logo */}
         <HashLink
           smooth
@@ -74,8 +88,11 @@ function Navbar() {
         {/* Content */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
-
-            <HashLink to="/#features" className="nav-link" onClick={closeNavbar}>
+            <HashLink
+              to="/#features"
+              className="nav-link"
+              onClick={closeNavbar}
+            >
               Features
             </HashLink>
 
@@ -94,27 +111,39 @@ function Navbar() {
                   Login
                 </Link>
 
-                <Link to="/register" className="btn btn-danger" onClick={closeNavbar}>
+                <Link
+                  to="/register"
+                  className="btn btn-danger"
+                  onClick={closeNavbar}
+                >
                   Register
                 </Link>
               </>
             ) : (
               <>
                 {/* Profile */}
-                <Link to="/profile" className="nav-link fs-2">
+                <Link
+                  to="/profile"
+                  className="nav-link fs-2"
+                  onClick={closeNavbar}
+                >
                   <i className="fa-solid fa-circle-user"></i>
                 </Link>
 
-                {/* Logout */}
-                <button className="btn btn-danger" onClick={handleLogout}>
+                {/* Logout */} 
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    handleLogout();
+                    closeNavbar();
+                  }}
+                >
                   Logout
                 </button>
               </>
             )}
-
           </div>
         </div>
-
       </div>
     </nav>
   );

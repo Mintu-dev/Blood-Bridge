@@ -1,0 +1,42 @@
+/* CARD HOVER */
+.profile-card {
+  transition: all 0.3s ease;
+  box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
+}
+
+.profile-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 20px 40px rgba(0,0,0,0.4);
+}
+
+/* ICON */
+.profile-icon {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: #FF8383;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.profile-icon:hover {
+  transform: rotate(10deg) scale(1.1);
+  background-color: #ff4d4d;
+}
+
+/* LINK */
+.change-pass-link {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.change-pass-link:hover {
+  color: #ffe6e6;
+  letter-spacing: 1px;
+  text-decoration: underline;
+}

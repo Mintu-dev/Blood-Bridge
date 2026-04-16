@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./Navbar.css";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
 
 function Explore_Navbar({ setResult }) {
   const [search, setSearch] = useState("");
-  const [ isLoggedIn ,setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const closeNavbar = () => {
@@ -18,30 +18,43 @@ function Explore_Navbar({ setResult }) {
     }
   };
   React.useEffect(() => {
-      const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token); // true/false automatically
-      
-    }, []);
-
-  const handleLogout = async () => {
+    const checkLogin = async () => {
       try {
-        await axios.post(
-          "http://localhost:8000/api/v1/user/logout",
-          {},
-          { withCredentials: true }
+        const res = await axios.get(
+          "http://localhost:8000/api/v1/user/profile",
+          { withCredentials: true },
         );
-  
-        // clear storage
-        localStorage.removeItem("token");
-  
-        // update UI instantly
+
+        if (res?.data?.user) {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
         setIsLoggedIn(false);
-  
-        navigate("/login");
-      } catch (error) {
-        console.log("Logout error", error);
       }
     };
+
+    checkLogin();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8000/api/v1/user/logout",
+        {},
+        { withCredentials: true },
+      );
+
+      // clear storage
+      localStorage.removeItem("token");
+
+      // update UI instantly
+      setIsLoggedIn(false);
+
+      navigate("/login");
+    } catch (error) {
+      console.log("Logout error", error);
+    }
+  };
 
   const handleSearch = async (value) => {
     setSearch(value);
@@ -105,29 +118,43 @@ function Explore_Navbar({ setResult }) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
             {/* CONDITIONAL UI */}
-                       {!isLoggedIn ? (
-                         <>
-                           <Link to="/login" className="nav-link" onClick={closeNavbar}>
-                             Login
-                           </Link>
-           
-                           <Link to="/register" className="btn btn-danger" onClick={closeNavbar}>
-                             Register
-                           </Link>
-                         </>
-                       ) : (
-                         <>
-                           {/* Profile */}
-                           <Link to="/profile" className="nav-link fs-2">
-                             <i className="fa-solid fa-circle-user"></i>
-                           </Link>
-           
-                           {/* Logout */}
-                           <button className="btn btn-danger" onClick={handleLogout}>
-                             Logout
-                           </button>
-                         </>
-                       )}
+            {!isLoggedIn ? (
+              <>
+                <Link to="/login" className="nav-link" onClick={closeNavbar}>
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="btn btn-danger"
+                  onClick={closeNavbar}
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <>
+                {/* Profile */}
+                <Link
+                  to="/profile"
+                  className="nav-link fs-2"
+                  onClick={closeNavbar}
+                >
+                  <i className="fa-solid fa-circle-user"></i>
+                </Link>
+
+                {/* Logout */}
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    handleLogout();
+                    closeNavbar();
+                  }}
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

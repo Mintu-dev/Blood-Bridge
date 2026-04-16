@@ -9,11 +9,39 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Loader from "../Loader.js";
 
 export default function Home({ result }) {
   const [donars, setDonars] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn , setIsLoggedIn] = useState(false);
+
+  useEffect(()=>{
+    const checkLogin = async()=>{
+    try{
+        const res = await axios.get( "http://localhost:8000/api/v1/user/profile",
+        { withCredentials: true }
+      )
+        if (res.data) {
+        setIsLoggedIn(true);
+      }
+     } catch (error) {
+      setIsLoggedIn(false);
+    }
+  }
+  checkLogin();
+  },[])
+
+  const navigate = useNavigate();
+
+const handlePostDonor = () => {
+  if (isLoggedIn) {
+    navigate("/donarregister");
+  } else {
+    navigate("/login");
+  }
+};
 
   const handler = async () => {
     try {
@@ -62,28 +90,28 @@ const dataToShow = isSearching ? result : donars;
             animation: "borderMove 4s linear infinite",
           }}
         >
-          <a
-            href="donarregister"
-            style={{
-              display: "inline-block",
-              padding: "14px 40px",
-              fontSize: "20px",
-              fontWeight: "600",
-              color: "white",
-              textDecoration: "none",
-              borderRadius: "50px",
-              background: "#d32f2f",
-            }}
-          >
-            ❤️ Post Donor
-          </a>
+         <div
+  onClick={handlePostDonor}
+  style={{
+    display: "inline-block",
+    padding: "14px 40px",
+    fontSize: "20px",
+    fontWeight: "600",
+    color: "white",
+    borderRadius: "50px",
+    background: "#d32f2f",
+    cursor: "pointer"
+  }}
+>
+  ❤️ Post Donor
+</div>
         </div>
       </div>
 
       {/*  NO RESULT MESSAGE */}
       {isSearching && dataToShow.length === 0 ? (
         <h3 style={{ textAlign: "center", color: "white" }}>
-          No donor found 😢
+          No donor found 
         </h3>
       ) : (
         <div
