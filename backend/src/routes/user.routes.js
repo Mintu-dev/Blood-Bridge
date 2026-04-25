@@ -7,6 +7,9 @@ import {
   ChangePassword,
   EditFullName,
   EditBio,
+  GetMsg,
+  SendMsg,
+  GetAllChats
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import {
@@ -28,5 +31,8 @@ router.route("/profile").get(verifyJWT, Profile);
 router.route("/change-password").post(verifyJWT, ChangePassword);
 router.route("/editfullname").post(verifyJWT, EditFullName);
 router.route("/editbio").post(verifyJWT , EditBio);
+router.route("/sendmsg").post(verifyJWT , SendMsg);
+router.route("/getmsg/:userId").get(verifyJWT,GetMsg);
+router.route("/allchat").get(verifyJWT , GetAllChats);
 
 export default router;

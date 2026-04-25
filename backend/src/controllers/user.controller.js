@@ -2,6 +2,7 @@ import {asyncHandler} from  "../utils/AsyncHandler.js";
 import {User} from "../models/user.model.js";
 import {ApiError} from "../utils/ApiError.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
+import Message from "../models/chat.model.js";
 
 const generateAccessandRefreshTokens = async(userId)=>{
     try{
@@ -182,6 +183,68 @@ const EditBio = asyncHandler(async(req,res)=>{
   
 })
 
+// controllers/user.controller.js
+
+const SendMsg = asyncHandler(async (req, res) => {
+  const { receiverId, message } = req.body;
+
+  if (!receiverId || !message) {
+    throw new ApiError(400, "Missing fields");
+  }
+
+  const newMsg = await Message.create({
+    sender: req.user._id,
+    receiver: receiverId,
+    message,
+  });
+
+  res.json(newMsg);
+});
+
+const GetMsg = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  const messages = await Message.find({
+    $or: [
+      { sender: req.user._id, receiver: userId },
+      { sender: userId, receiver: req.user._id },
+    ],
+  }).sort({ createdAt: 1 });
+
+  res.json(messages);
+});
+
+
+const GetAllChats = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const messages = await Message.find({
+    $or: [{ sender: userId }, { receiver: userId }],
+  })
+    .sort({ createdAt: -1 })
+    .populate("sender", "fullname username")
+    .populate("receiver", "fullname username");
+
+  const map = new Map();
+
+  messages.forEach((msg) => {
+    const isSender = msg.sender._id.toString() === userId.toString();
+    const otherUser = isSender ? msg.receiver : msg.sender;
+
+    const key = otherUser._id.toString();
+
+    if (!map.has(key)) {
+      map.set(key, {
+        _id: otherUser._id,
+        fullname: otherUser.fullname,
+        username: otherUser.username,
+        lastMessage: msg.message, // ✅ FIXED
+      });
+    }
+  });
+
+  res.json([...map.values()]);
+});
 export {
     registerUser,
     loginUser,
@@ -189,5 +252,8 @@ export {
     Profile,
     ChangePassword,
     EditFullName,
-    EditBio
+    EditBio,
+    SendMsg,
+    GetMsg,
+    GetAllChats
 }
