@@ -12,6 +12,8 @@ import Hero from "./Explore/Home.js"
 import DonarForm from "./Registered/DonarRegister.js"
 import EditFullname from  "./EditFullname.js"
 import EditBio from "./EditBio.js"
+import Chat from "./Chat.js";
+import ChatList from "./ChatList.js"
 
  
 const router = createBrowserRouter([
@@ -22,11 +24,13 @@ const router = createBrowserRouter([
       { path: "/", element: <LandingPage /> },
       {path:"register" , element: <Register/>},
       {path:"login" , element: <Login/> },
+       {path:"allchat" , element: <ChatList/> },
       {path:"profile" , element: <Profile/>},
       {path:"explore" , element: <Hero/>},
       {path:"changepassword" , element: <ChangePassword/>},
       {path:"editfullname" , element: <EditFullname/>},
       {path:"editbio" , element: <EditBio/>},
+      {path:"chat/:userId", element:<Chat/>},
        {path:"donarregister" , element: <DonarForm/>}
     ]
   }

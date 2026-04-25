@@ -12,6 +12,9 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+//  ADD THIS IMPORT
+import socket from "../socket";
+
 function Login() {
   useEffect(() => {
     AOS.init({
@@ -48,9 +51,12 @@ function Login() {
         
         handleSuccess(response.data.message);
 
-      
-  navigate("/explore");
+        // 🔥 ADD THIS BLOCK (SOCKET REGISTER)
+        if (response.data.user?._id) {
+          socket.emit("addUser", response.data.user._id);
+        }
 
+        navigate("/explore");
       }
     } catch (error) {
       setLoader(false);
@@ -58,17 +64,14 @@ function Login() {
       const msg =
         error.response?.data?.message || "Something went wrong";
 
-      
       handleError(msg);
     }
   };
 
-  
-
   return (
     <>
+      {loader && <Loader />}
 
-    {loader && <Loader />}
       <form onSubmit={submitHandler}>
         <Box
           sx={{
@@ -120,8 +123,6 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-
-          
 
             <Button
               fullWidth

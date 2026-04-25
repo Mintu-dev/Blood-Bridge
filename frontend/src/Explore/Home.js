@@ -15,33 +15,34 @@ import Loader from "../Loader.js";
 export default function Home({ result }) {
   const [donars, setDonars] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isLoggedIn , setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=>{
-    const checkLogin = async()=>{
-    try{
-        const res = await axios.get( "http://localhost:8000/api/v1/user/profile",
-        { withCredentials: true }
-      )
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/v1/user/profile",
+          { withCredentials: true }
+        );
         if (res.data) {
-        setIsLoggedIn(true);
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        setIsLoggedIn(false);
       }
-     } catch (error) {
-      setIsLoggedIn(false);
-    }
-  }
-  checkLogin();
-  },[])
+    };
+    checkLogin();
+  }, []);
 
   const navigate = useNavigate();
 
-const handlePostDonor = () => {
-  if (isLoggedIn) {
-    navigate("/donarregister");
-  } else {
-    navigate("/login");
-  }
-};
+  const handlePostDonor = () => {
+    if (isLoggedIn) {
+      navigate("/donarregister");
+    } else {
+      navigate("/login");
+    }
+  };
 
   const handler = async () => {
     try {
@@ -53,7 +54,7 @@ const handlePostDonor = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); //  always stop loader
+      setLoading(false);
     }
   };
 
@@ -61,10 +62,8 @@ const handlePostDonor = () => {
     handler();
   }, []);
 
-  // FIXED LOGIC
- const isSearching = Array.isArray(result);
-const dataToShow = isSearching ? result : donars;
-
+  const isSearching = Array.isArray(result);
+  const dataToShow = isSearching ? result : donars;
 
   if (loading) {
     return <Loader />;
@@ -90,28 +89,28 @@ const dataToShow = isSearching ? result : donars;
             animation: "borderMove 4s linear infinite",
           }}
         >
-         <div
-  onClick={handlePostDonor}
-  style={{
-    display: "inline-block",
-    padding: "14px 40px",
-    fontSize: "20px",
-    fontWeight: "600",
-    color: "white",
-    borderRadius: "50px",
-    background: "#d32f2f",
-    cursor: "pointer"
-  }}
->
-  ❤️ Post Donor
-</div>
+          <div
+            onClick={handlePostDonor}
+            style={{
+              display: "inline-block",
+              padding: "14px 40px",
+              fontSize: "20px",
+              fontWeight: "600",
+              color: "white",
+              borderRadius: "50px",
+              background: "#d32f2f",
+              cursor: "pointer",
+            }}
+          >
+            ❤️ Post Donor
+          </div>
         </div>
       </div>
 
-      {/*  NO RESULT MESSAGE */}
+      {/* NO RESULT */}
       {isSearching && dataToShow.length === 0 ? (
         <h3 style={{ textAlign: "center", color: "white" }}>
-          No donor found 
+          No donor found
         </h3>
       ) : (
         <div
@@ -162,11 +161,28 @@ const dataToShow = isSearching ? result : donars;
                       : "U"}
                   </Avatar>
                 }
+
+                // 🔥 UPDATED ACTION (💬 added)
                 action={
-                  <IconButton>
-                    <MoreVertIcon />
-                  </IconButton>
+                  <>
+                    <IconButton
+                      onClick={() => {
+                        if (!isLoggedIn) {
+                          navigate("/login");
+                        } else {
+                          navigate(`/Chat/${donar._id}`);
+                        }
+                      }}
+                    >
+                      💬
+                    </IconButton>
+
+                    <IconButton>
+                      <MoreVertIcon />
+                    </IconButton>
+                  </>
                 }
+
                 title={donar.fullName}
                 subheader={
                   donar.createdAt

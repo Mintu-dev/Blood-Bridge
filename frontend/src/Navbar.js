@@ -1,26 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
-import {handleSuccess , handleError} from "./utils/Error&SuccessHandler.js";
+import socket from "./socket.js";
+import { useLocation } from "react-router-dom";
+import { handleSuccess } from "./utils/Error&SuccessHandler.js";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [unread, setUnread] = useState(0);
+  const [myId, setMyId] = useState(""); //  IMPORTANT
+  const location = useLocation();
 
-  //  Check login on load
-  React.useEffect(() => {
+  useEffect(() => {
+  if (location.pathname.includes("/chat")) {
+    setUnread(0);
+  }
+}, [location]);
+
+  //  SOCKET NOTIFICATION (FIXED WITH FILTER)
+  useEffect(() => {
+    const handler = (msg) => {
+      // 🔥 ONLY if message is for ME
+      if (String(msg.receiver) === String(myId)) {
+        console.log("🔔 New message:", msg);
+        setUnread((prev) => prev + 1);
+      }
+    };
+
+    socket.on("receiveMessage", handler);
+
+    return () => socket.off("receiveMessage", handler);
+  }, [myId]);
+
+  // ✅ LOGIN CHECK + SOCKET REGISTER
+  useEffect(() => {
     const checkLogin = async () => {
       try {
         const res = await axios.get(
           "http://localhost:8000/api/v1/user/profile",
-          { withCredentials: true },
+          { withCredentials: true }
         );
 
         if (res?.data?.user) {
           setIsLoggedIn(true);
+
+          setMyId(res.data.user._id); // 🔥 SAVE MY ID
+          socket.emit("addUser", res.data.user._id);
         }
       } catch (err) {
         setIsLoggedIn(false);
@@ -38,22 +67,17 @@ function Navbar() {
     }
   };
 
-  //  Logout Function
   const handleLogout = async () => {
     try {
       await axios.post(
         "http://localhost:8000/api/v1/user/logout",
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
+
       handleSuccess("Logout Successfully");
-
-      // clear storage
       localStorage.removeItem("token");
-
-      // update UI instantly
       setIsLoggedIn(false);
-       
       navigate("/login");
     } catch (error) {
       console.log("Logout error", error);
@@ -63,7 +87,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-white py-3 sticky-top">
       <div className="container">
-        {/* Logo */}
+
         <HashLink
           smooth
           to="/#hero"
@@ -75,7 +99,6 @@ function Navbar() {
           <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
         </HashLink>
 
-        {/* Toggle */}
         <button
           className="navbar-toggler"
           type="button"
@@ -85,14 +108,10 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Content */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
-            <HashLink
-              to="/#features"
-              className="nav-link"
-              onClick={closeNavbar}
-            >
+
+            <HashLink to="/#features" className="nav-link" onClick={closeNavbar}>
               Features
             </HashLink>
 
@@ -104,33 +123,45 @@ function Navbar() {
               Explore
             </HashLink>
 
-            {/* CONDITIONAL UI */}
             {!isLoggedIn ? (
               <>
                 <Link to="/login" className="nav-link" onClick={closeNavbar}>
                   Login
                 </Link>
 
-                <Link
-                  to="/register"
-                  className="btn btn-danger"
-                  onClick={closeNavbar}
-                >
+                <Link to="/register" className="btn btn-danger" onClick={closeNavbar}>
                   Register
                 </Link>
               </>
             ) : (
               <>
-                {/* Profile */}
-                <Link
-                  to="/profile"
-                  className="nav-link fs-2"
-                  onClick={closeNavbar}
+                {/* 🔔 NOTIFICATION */}
+                <Link 
+                  to="/allchat" 
+                  className="nav-link position-relative"
+                  onClick={() => setUnread(0)} //  reset when opened
                 >
+                  🔔
+                  {unread > 0 && (
+                    <span style={{
+                      position: "absolute",
+                      top: "-5px",
+                      right: "-10px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "2px 6px",
+                      fontSize: "12px"
+                    }}>
+                      {unread}
+                    </span>
+                  )}
+                </Link>
+
+                <Link to="/profile" className="nav-link fs-2" onClick={closeNavbar}>
                   <i className="fa-solid fa-circle-user"></i>
                 </Link>
 
-                {/* Logout */} 
                 <button
                   className="btn btn-danger"
                   onClick={() => {

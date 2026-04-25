@@ -16,6 +16,7 @@ export default function Profile() {
       }, []);
 
   const [fullname, setFullname] = React.useState("");
+  const [myId , setMyId] = React.useState("");
   const [created, setCreated] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [bio, setBio] = React.useState("");
@@ -49,6 +50,17 @@ export default function Profile() {
     };
     fetchProfile();
   }, []);
+
+  React.useEffect(() => {
+  const getUser = async () => {
+    const res = await axios.get(
+      "http://localhost:8000/api/v1/user/profile",
+      { withCredentials: true }
+    );
+    setMyId(res.data.user._id);
+  };
+  getUser();
+}, []);
 
   return (
     <div
