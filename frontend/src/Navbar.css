@@ -99,3 +99,23 @@ html {
 .register:hover {
   transform: scale(1.05);
 }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nav-link.position-relative .fa-bell {
+  transition: transform 0.3s ease;
+}
+
+.nav-link.position-relative:hover .fa-bell {
+  transform: rotate(15deg);
+}

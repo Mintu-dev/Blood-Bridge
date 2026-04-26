@@ -20,7 +20,31 @@ function Explore_Navbar({ setResult }) {
     }
   };
 
-  // LOGIN + SOCKET REGISTER
+  // ✅ SIMPLE NOTIFICATION - Check localStorage every 1 second
+  useEffect(() => {
+    const updateUnread = () => {
+      try {
+        const data = localStorage.getItem('unreadCounts');
+        if (data) {
+          const unreadCounts = JSON.parse(data);
+          const total = Object.values(unreadCounts).reduce((sum, val) => sum + (val || 0), 0);
+          setUnread(total);
+        }
+      } catch (err) {
+        console.log("❌ Error reading unread:", err);
+      }
+    };
+
+    // Initial load
+    updateUnread();
+
+    // Check every 1 second
+    const interval = setInterval(updateUnread, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ LOGIN + SOCKET REGISTER
   useEffect(() => {
     const checkLogin = async () => {
       try {
@@ -41,17 +65,6 @@ function Explore_Navbar({ setResult }) {
     checkLogin();
   }, []);
 
-  // ✅ NOTIFICATION FIXED
-  useEffect(() => {
-    const handler = () => {
-      setUnread((prev) => prev + 1);
-    };
-
-    socket.on("receiveMessage", handler);
-
-    return () => socket.off("receiveMessage", handler);
-  }, []);
-
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -61,7 +74,9 @@ function Explore_Navbar({ setResult }) {
       );
 
       localStorage.removeItem("token");
+      localStorage.removeItem("unreadCounts");
       setIsLoggedIn(false);
+      setUnread(0);
       navigate("/login");
     } catch (error) {
       console.log("Logout error", error);
@@ -105,6 +120,15 @@ function Explore_Navbar({ setResult }) {
           />
         </form>
 
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-3 align-items-lg-center">
 
@@ -115,21 +139,32 @@ function Explore_Navbar({ setResult }) {
               </>
             ) : (
               <>
-                {/* 🔔 NOTIFICATION */}
-                <Link to="/allchat" className="nav-link position-relative">
+                {/* 🔔 NOTIFICATION BELL */}
+                <Link 
+                  to="/allchat" 
+                  className="nav-link position-relative"
+                  onClick={closeNavbar}
+                  style={{ fontSize: "24px" }}
+                >
                   🔔
                   {unread > 0 && (
                     <span style={{
                       position: "absolute",
-                      top: "-5px",
-                      right: "-10px",
-                      background: "red",
+                      top: "-8px",
+                      right: "-12px",
+                      background: "#d32f2f",
                       color: "white",
                       borderRadius: "50%",
-                      padding: "2px 6px",
-                      fontSize: "12px"
+                      minWidth: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.3)"
                     }}>
-                      {unread}
+                      {unread > 99 ? '99+' : unread}
                     </span>
                   )}
                 </Link>
@@ -138,7 +173,10 @@ function Explore_Navbar({ setResult }) {
                   <i className="fa-solid fa-circle-user"></i>
                 </Link>
 
-                <button className="btn btn-danger" onClick={handleLogout}>
+                <button className="btn btn-danger" onClick={() => {
+                  handleLogout();
+                  closeNavbar();
+                }}>
                   Logout
                 </button>
               </>

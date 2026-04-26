@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
@@ -12,29 +12,32 @@ function Navbar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [unread, setUnread] = useState(0);
-  const [myId, setMyId] = useState(""); //  IMPORTANT
+  const [myId, setMyId] = useState("");
   const location = useLocation();
 
+  // ✅ SIMPLE NOTIFICATION - Check localStorage every 1 second
   useEffect(() => {
-  if (location.pathname.includes("/chat")) {
-    setUnread(0);
-  }
-}, [location]);
-
-  //  SOCKET NOTIFICATION (FIXED WITH FILTER)
-  useEffect(() => {
-    const handler = (msg) => {
-      // 🔥 ONLY if message is for ME
-      if (String(msg.receiver) === String(myId)) {
-        console.log("🔔 New message:", msg);
-        setUnread((prev) => prev + 1);
+    const updateUnread = () => {
+      try {
+        const data = localStorage.getItem('unreadCounts');
+        if (data) {
+          const unreadCounts = JSON.parse(data);
+          const total = Object.values(unreadCounts).reduce((sum, val) => sum + (val || 0), 0);
+          setUnread(total);
+        }
+      } catch (err) {
+        console.log("❌ Error reading unread:", err);
       }
     };
 
-    socket.on("receiveMessage", handler);
+    // Initial load
+    updateUnread();
 
-    return () => socket.off("receiveMessage", handler);
-  }, [myId]);
+    // Check every 1 second
+    const interval = setInterval(updateUnread, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // ✅ LOGIN CHECK + SOCKET REGISTER
   useEffect(() => {
@@ -47,8 +50,8 @@ function Navbar() {
 
         if (res?.data?.user) {
           setIsLoggedIn(true);
-
-          setMyId(res.data.user._id); // 🔥 SAVE MY ID
+          setMyId(res.data.user._id);
+          
           socket.emit("addUser", res.data.user._id);
         }
       } catch (err) {
@@ -77,7 +80,9 @@ function Navbar() {
 
       handleSuccess("Logout Successfully");
       localStorage.removeItem("token");
+      localStorage.removeItem("unreadCounts");
       setIsLoggedIn(false);
+      setUnread(0);
       navigate("/login");
     } catch (error) {
       console.log("Logout error", error);
@@ -135,25 +140,32 @@ function Navbar() {
               </>
             ) : (
               <>
-                {/* 🔔 NOTIFICATION */}
+                {/* 🔔 NOTIFICATION BELL */}
                 <Link 
                   to="/allchat" 
                   className="nav-link position-relative"
-                  onClick={() => setUnread(0)} //  reset when opened
+                  onClick={closeNavbar}
+                  style={{ fontSize: "24px" }}
                 >
                   🔔
                   {unread > 0 && (
                     <span style={{
                       position: "absolute",
-                      top: "-5px",
-                      right: "-10px",
-                      background: "red",
+                      top: "-8px",
+                      right: "-12px",
+                      background: "#d32f2f",
                       color: "white",
                       borderRadius: "50%",
-                      padding: "2px 6px",
-                      fontSize: "12px"
+                      minWidth: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.3)"
                     }}>
-                      {unread}
+                      {unread > 99 ? '99+' : unread}
                     </span>
                   )}
                 </Link>

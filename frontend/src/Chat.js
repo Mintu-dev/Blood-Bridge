@@ -10,7 +10,7 @@ function Chat() {
   const [text, setText] = useState("");
   const [myId, setMyId] = useState("");
 
-  // 🟢 SOCKET CONNECT
+  // SOCKET CONNECT
   useEffect(() => {
     socket.on("connect", () => {
       console.log("🟢 CONNECTED:", socket.id);
@@ -19,9 +19,10 @@ function Chat() {
     return () => socket.off("connect");
   }, []);
 
-  // 🟢 GET USER
-  useEffect(() => {
-    const getUser = async () => {
+  // GET USER
+ useEffect(() => {
+  const getUser = async () => {
+    try {
       const res = await axios.get(
         "http://localhost:8000/api/v1/user/profile",
         { withCredentials: true }
@@ -30,36 +31,53 @@ function Chat() {
       const id = res.data.user._id;
       setMyId(id);
 
-      socket.emit("addUser", id);
-      console.log("👤 REGISTERED:", id);
-    };
+      if (socket.connected) {
+        socket.emit("addUser", id);
+        console.log("👤 MY ID (socket connected):", id);
+      } else {
+        socket.on("connect", () => {
+          socket.emit("addUser", id);
+          console.log("👤 MY ID (on connect):", id);
+        });
+      }
+    } catch (err) {
+      console.log("❌ Profile error:", err);
+    }
+  };
 
-    getUser();
-  }, []);
+  getUser();
+}, []);
 
-  // 🟢 LOAD MESSAGES
-  useEffect(() => {
-    if (!userId) return;
+  // LOAD MESSAGES
+ useEffect(() => {
+  if (!userId) return;
 
-    const fetchMessages = async () => {
-      const res = await axios.get(
-        `http://localhost:8000/api/v1/user/getmsg/${userId}`,
-        { withCredentials: true }
-      );
+  const fetchMessages = async () => {
+    const res = await axios.get(
+      `http://localhost:8000/api/v1/user/getmsg/${userId}`,
+      { withCredentials: true }
+    );
+    
+    console.log("📦 OLD MESSAGES:", res.data);  // ✅ Yeh print hota hai?
+    setMessages(res.data || []);
+  };
 
-      setMessages(res.data || []);
-    };
+  fetchMessages();
+}, [userId]);
 
-    fetchMessages();
-  }, [userId]);
-
-  // 🟢 REALTIME FIXED
+  // REALTIME
   useEffect(() => {
     const handler = (msg) => {
-      if (!msg) return;
+      console.log("📩 RECEIVED MSG:", msg);
 
       const senderId = msg.sender?._id || msg.sender;
       const receiverId = msg.receiver?._id || msg.receiver;
+       if (!myId || !userId) return;
+      console.log("👉 senderId:", senderId);
+      console.log("👉 receiverId:", receiverId);
+      console.log("👉 MY ID:", myId);
+      console.log("👉 CHAT WITH:", userId);
+      
 
       const isValid =
         (String(senderId) === String(myId) &&
@@ -67,35 +85,45 @@ function Chat() {
         (String(senderId) === String(userId) &&
           String(receiverId) === String(myId));
 
+      console.log("✅ isValid:", isValid);
+
       if (isValid) {
         setMessages((prev) => [...prev, msg]);
       }
     };
 
     socket.on("receiveMessage", handler);
-
     return () => socket.off("receiveMessage", handler);
   }, [myId, userId]);
 
-  // 🟢 SEND MESSAGE
-  const sendMessage = () => {
-    if (!text.trim() || !myId || !userId) return;
+  // SEND MESSAGE
+ const sendMessage = () => {
+  if (!text.trim() || !myId || !userId) {
+    console.log("❌ BLOCKED SEND:", { myId, userId, text });
+    return;
+  }
 
-    const msg = {
-      sender: myId,
-      receiver: userId,
-      message: text,
-    };
-
-    console.log("📤 SENDING:", msg);
-
-    socket.emit("sendMessage", msg);
-
-    setMessages((prev) => [...prev, msg]);
-    setText("");
+  if (myId === userId) {
+    console.log("❌ SENDING TO SELF BLOCKED");
+    return;
+  }
+if (!myId || !userId) return;
+  const msg = {
+    sender: myId,
+    receiver: userId,
+    message: text,
   };
 
-  console.log("CHAT OPEN WITH:", userId);
+  console.log("📤 SENDING MSG:", msg);
+
+  socket.emit("sendMessage", msg);
+
+  setMessages((prev) => [...prev, msg]);
+  setText("");
+};
+
+  console.log("👤 MY ID:", myId);
+  console.log("💬 CHAT WITH (URL):", userId);
 
   return (
     <div style={{ padding: "20px" }}>

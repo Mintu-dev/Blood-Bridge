@@ -165,17 +165,27 @@ export default function Home({ result }) {
                 // 🔥 UPDATED ACTION (💬 added)
                 action={
                   <>
-                    <IconButton
-                      onClick={() => {
-                        if (!isLoggedIn) {
-                          navigate("/login");
-                        } else {
-                          navigate(`/Chat/${donar._id}`);
-                        }
-                      }}
-                    >
-                      💬
-                    </IconButton>
+                   <IconButton
+  onClick={async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      // ✅ Donor ke email se user ID fetch karo
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/v1/user/user-by-email/${donar.email}`
+        );
+        const userId = res.data.user._id;
+        console.log("✅ Actual User ID:", userId);
+        navigate(`/chat/${userId}`);
+      } catch (err) {
+        console.log("❌ User not found for this donor");
+      }
+    }
+  }}
+>
+  💬
+</IconButton>
 
                     <IconButton>
                       <MoreVertIcon />
