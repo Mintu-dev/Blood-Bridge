@@ -69,6 +69,19 @@ function ChatList() {
     fetchChats();
   }, []);
 
+  // ✅ FUNCTION TO UPDATE LOCALSTORAGE & NOTIFY NAVBAR
+  const updateUnreadStorage = (chatsArray) => {
+    const unreadCounts = {};
+    chatsArray.forEach(c => {
+      const cId = c.user?._id || c._id;
+      if (cId) {
+        unreadCounts[cId] = c.unread || 0;
+      }
+    });
+    localStorage.setItem('unreadCounts', JSON.stringify(unreadCounts));
+    console.log("💾 SAVED TO LOCALSTORAGE:", unreadCounts);
+  };
+
   // REALTIME
   useEffect(() => {
     if (!myId) return;
@@ -91,28 +104,40 @@ function ChatList() {
       const isChatOpen = currentPath.includes(`/chat/${otherUserId}`);
 
       setChats((prev) => {
-        const updated = prev.map((c) => {
-          const cId = c.user?._id || c._id;
-          if (String(cId) === String(otherUserId)) {
-            return {
-              ...c,
+        // Check if chat already exists
+        const chatExists = prev.find(
+          (c) => String(c.user?._id || c._id) === String(otherUserId)
+        );
+
+        let updated;
+        if (chatExists) {
+          updated = prev.map((c) => {
+            const cId = c.user?._id || c._id;
+            if (String(cId) === String(otherUserId)) {
+              return {
+                ...c,
+                lastMessage: msg.message,
+                unread: isChatOpen ? 0 : (c.unread || 0) + 1
+              };
+            }
+            return c;
+          });
+        } else {
+          // New chat entry
+          updated = [
+            {
+              _id: otherUserId,
+              user: otherUser,
+              fullname: otherUser?.fullname || "User",
               lastMessage: msg.message,
-              unread: isChatOpen ? 0 : (c.unread || 0) + 1
-            };
-          }
-          return c;
-        });
+              unread: 1
+            },
+            ...prev
+          ];
+        }
 
-        const unreadCounts = {};
-        updated.forEach(c => {
-          const cId = c.user?._id || c._id;
-          unreadCounts[cId] = c.unread;
-        });
-        localStorage.setItem('unreadCounts', JSON.stringify(unreadCounts));
-
-        const totalUnread = updated.reduce((sum, c) => sum + (c.unread || 0), 0);
-        window.dispatchEvent(new CustomEvent('updateUnread', { detail: totalUnread }));
-
+        // ✅ UPDATE LOCALSTORAGE
+        updateUnreadStorage(updated);
         return updated;
       });
     };
@@ -125,6 +150,7 @@ function ChatList() {
     let otherId = chat.user?._id || chat._id;
     if (!otherId || String(otherId) === String(myId)) return;
 
+    // ✅ Reset unread for this chat
     setChats(prev => {
       const updated = prev.map(c => {
         const cId = c.user?._id || c._id;
@@ -134,23 +160,9 @@ function ChatList() {
         return c;
       });
 
-      // ChatList.js - REALTIME useEffect ke andar
-
-// ✅ Save to localStorage
-const unreadCounts = {};
-updated.forEach(c => {
-  const cId = c.user?._id || c._id;
-  unreadCounts[cId] = c.unread;
-});
-localStorage.setItem('unreadCounts', JSON.stringify(unreadCounts));
-
-// ✅ Trigger Storage Event (Navbar listen karega)
-window.dispatchEvent(new StorageEvent('storage', {
-  key: 'unreadCounts',
-  newValue: JSON.stringify(unreadCounts)
-}));
-
-return updated;
+      // ✅ UPDATE LOCALSTORAGE
+      updateUnreadStorage(updated);
+      return updated;
     });
 
     navigate(`/chat/${otherId}`);

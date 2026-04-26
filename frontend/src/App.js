@@ -8,7 +8,8 @@ import { Outlet } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-import socket from "./socket"; // 🔥 IMPORTANT
+import socket from "./socket";
+import NotificationHandler from "./NotificationHandler";
 
 function App() {
   const location = useLocation();
@@ -16,7 +17,7 @@ function App() {
 
   const isExplore = location.pathname === "/explore";
 
-  // 🔥 ADD THIS BLOCK
+  // 🔥 REGISTER SOCKET ON APP LOAD
   useEffect(() => {
     const connectSocket = async () => {
       try {
@@ -27,8 +28,9 @@ function App() {
 
         const user = res.data.user;
 
-        // 🔥 REGISTER USER IN SOCKET
+        // REGISTER USER IN SOCKET
         socket.emit("addUser", user._id);
+        console.log("🟢 APP - User registered in socket:", user._id);
 
       } catch (err) {
         console.log("User not logged in");
@@ -40,6 +42,9 @@ function App() {
 
   return (
     <>
+      {/* ✅ NotificationHandler ALWAYS mounted */}
+      <NotificationHandler />
+      
       {isExplore
         ? <Explore_Navbar setResult={setResult} />
         : <Navbar />

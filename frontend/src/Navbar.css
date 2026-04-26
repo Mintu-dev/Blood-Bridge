@@ -1,33 +1,30 @@
-.register:hover{
-    box-shadow: 3px  7px 10px  rgb(200, 72, 72);
-}
-.signin:hover{
-    box-shadow: 3px  7px 10px rgb(154, 150, 150);
-}
-
-.nav-link:hover{
-    color:rgb(215, 66, 66)
-}
-.nav-link{
-    font-size:1.2rem;
+/* ===== GLOBAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.navbar{
-    background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 50%, #fce7f3 100%);
+html {
+  scroll-behavior: smooth;
 }
+
+/* ===== NAVBAR BASE ===== */
+.navbar {
+  background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 50%, #fce7f3 100%);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: clamp(1.1rem, 3vw, 1.6rem) !important;
+  transition: all 0.3s ease;
+}
+
 /* Logo Text */
 .life-text {
   color: black;
 }
-@media (max-width: 287px) {
-  .life-text {
-    font-size: 20px;
-  }
 
-  .connect-text {
-    font-size: 20px;
-  }
-}
 .connect-text {
   color: red;
 }
@@ -35,7 +32,7 @@
 /* Blood Icon Animation */
 .blood-icon {
   color: red;
-  font-size: 22px;
+  font-size: clamp(16px, 3vw, 22px);
   animation: pulseBlood 1.5s infinite;
   text-shadow: 0 0 8px red;
 }
@@ -55,49 +52,85 @@
   }
 }
 
-/* Nav Hover Effect */
-.nav-hover {
-  transition: 0.3s ease;
+/* ===== NAV LINKS ===== */
+.nav-link {
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem) !important;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-.nav-hover:hover {
-  color: red !important;
+.nav-link:hover {
+  color: rgb(215, 66, 66) !important;
 }
 
-/* Sign In Button */
+/* Sign In Link */
 .signin {
   padding: 6px 18px;
   border: 1px solid grey;
   border-radius: 20px;
   transition: 0.3s ease;
+  background: white;
 }
 
 .signin:hover {
   background-color: black;
   color: white !important;
+  box-shadow: 3px 7px 10px rgb(154, 150, 150);
 }
-.nav-hover {
-  transition: 0.3s;
-}
-
-.nav-hover:hover {
-  color: red;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-
 
 /* Register Button */
 .register {
-  border-radius: 20px;
-  padding: 6px 18px;
+  border-radius: 20px !important;
+  padding: 8px 20px !important;
   transition: 0.3s ease;
+  background: #d32f2f;
+  border: none;
+  font-weight: 500;
 }
 
 .register:hover {
   transform: scale(1.05);
+  box-shadow: 3px 7px 10px rgb(200, 72, 72);
+  background: #b71c1c;
+}
+
+/* ===== NOTIFICATION BADGES ===== */
+/* Desktop Badge */
+.desktop-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #d32f2f;
+  color: white;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.4);
+  animation: pulse 2s infinite;
+}
+
+/* Mobile Badge */
+.mobile-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #d32f2f;
+  color: white;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -112,10 +145,142 @@ html {
   }
 }
 
-.nav-link.position-relative .fa-bell {
-  transition: transform 0.3s ease;
+/* Bell Hover */
+.nav-link.position-relative:hover {
+  animation: bellRing 0.5s ease;
 }
 
-.nav-link.position-relative:hover .fa-bell {
-  transform: rotate(15deg);
+@keyframes bellRing {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* ===== MOBILE FIXES ===== */
+@media (max-width: 991.98px) {
+  .navbar {
+    padding: 8px 0;
+  }
+
+  .navbar-collapse {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    margin-top: 10px;
+    padding: 10px 0;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .nav-link {
+    padding: 12px 20px !important;
+    border-radius: 8px;
+    font-size: 1rem !important;
+  }
+
+  .nav-link:hover {
+    background: #f8f9fa;
+  }
+
+  .signin, .register {
+    margin: 5px 15px;
+    text-align: center;
+  }
+
+  .btn-danger {
+    margin: 5px 15px;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* ===== TABLET FIXES ===== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .navbar-brand {
+    font-size: 1.3rem !important;
+  }
+
+  .nav-link {
+    font-size: 1rem !important;
+  }
+}
+
+/* ===== SMALL PHONES ===== */
+@media (max-width: 576px) {
+  .navbar {
+    padding: 5px 0;
+  }
+
+  .navbar-brand {
+    font-size: 1.05rem !important;
+  }
+
+  .blood-icon {
+    font-size: 16px !important;
+  }
+
+  .nav-link {
+    font-size: 0.9rem !important;
+    padding: 10px 15px !important;
+  }
+
+  .btn-danger {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ===== EXTRA SMALL PHONES ===== */
+@media (max-width: 380px) {
+  .navbar-brand {
+    font-size: 0.95rem !important;
+  }
+
+  .life-text, .connect-text {
+    font-size: 0.9rem;
+  }
+
+  .blood-icon {
+    font-size: 14px !important;
+  }
+
+  .navbar {
+    padding: 4px 0;
+  }
+}
+
+/* ===== LARGE DESKTOP ===== */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+
+  .nav-link {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* ===== SEARCH BAR STYLING ===== */
+.input-group-text {
+  border-radius: 25px 0 0 25px;
+  padding: 10px 15px;
+}
+
+.form-control {
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+}
+
+.form-control:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.15);
+}
+
+/* Mobile search inside menu */
+.d-md-none .input-group {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-radius: 25px;
+  overflow: hidden;
 }
