@@ -94,8 +94,8 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     const option = {
         httpOnly:true,
-        secure:false,
-        sameSite: "lax",
+        secure:true,
+        sameSite: "none",
     }
    return res
   .status(200)
@@ -124,8 +124,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   // Cookie options for localhost
   const option = {
     httpOnly: true,
-    secure: false,    // localhost
-    sameSite: "lax",  // cross-origin allow
+    secure: true,    // localhost
+    sameSite: "none",  // cross-origin allow
   };
 
   res
