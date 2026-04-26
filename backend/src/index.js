@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import http from "http";
 import { Server } from "socket.io";
 import Message from "./models/chat.model.js";
+import {User} from "./models/user.model.js";
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -29,42 +31,61 @@ io.on("connection", (socket) => {
   // ✅ SEND MESSAGE
 socket.on("sendMessage", async (msg) => {
   try {
+    console.log("📥 GOT MESSAGE:", msg);
+
     const { sender, receiver, message } = msg;
 
-    console.log("📥 GOT:", msg);
-
-    // ❌ STOP BAD ID EARLY
-    if (!mongoose.Types.ObjectId.isValid(receiver)) {
-      console.log("❌ INVALID RECEIVER ID:", receiver);
+    // ❌ VALIDATION (VERY IMPORTANT)
+    if (!sender || !receiver || !message) {
+      console.log("❌ Missing fields:", msg);
       return;
     }
 
+    // 🔥 CHECK USERS EXIST (IMPORTANT DEBUG STEP)
+    const senderUser = await User.findById(sender);
     const receiverUser = await User.findById(receiver);
 
-    if (!receiverUser) {
-      console.log("❌ USER NOT FOUND:", receiver);
+    if (!senderUser || !receiverUser) {
+      console.log("❌ User not found");
+      console.log("Sender:", senderUser);
+      console.log("Receiver:", receiverUser);
       return;
     }
 
-    const newMsg = await Message.create({
+    // 💾 SAVE MESSAGE
+    const savedMsg = await Message.create({
       sender,
       receiver,
       message,
     });
 
-    const populatedMsg = await Message.findById(newMsg._id)
-      .populate("sender receiver");
+    console.log("👉 sender:", sender);
+console.log("👉 receiver:", receiver);
+console.log("👉 message:", message);
 
-    const socketId = onlineUsers[receiver];
+if (!mongoose.Types.ObjectId.isValid(receiver)) {
+  console.log("❌ INVALID OBJECT ID FORMAT:", receiver);
+  return;
+}
+    console.log("✅ MESSAGE SAVED:", savedMsg);
 
-    if (socketId) {
-      io.to(socketId).emit("receiveMessage", populatedMsg);
+    // 🔥 POPULATE
+    const populatedMsg = await Message.findById(savedMsg._id)
+      .populate("sender", "_id fullname username")
+      .populate("receiver", "_id fullname username");
+
+    // 📡 SEND TO RECEIVER
+    const receiverSocketId = onlineUsers[receiver];
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("receiveMessage", populatedMsg);
     }
 
+    // 📡 SEND BACK TO SENDER
     socket.emit("messageSent", populatedMsg);
 
   } catch (err) {
-    console.log("❌ ERROR:", err.message);
+    console.log("❌ MESSAGE ERROR:", err);
   }
 });
 

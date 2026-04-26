@@ -17,6 +17,12 @@ const donorSchema = new mongoose.Schema({
     state: { type: String, required: true } ,
     pincode: { type: String, required: true }  ,
   },
+   user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    unique: true  // Ek user ek hi donor profile bana sakta
+  },
   weight: { type: Number, required: true },
   height: { type: Number, required: true },
 

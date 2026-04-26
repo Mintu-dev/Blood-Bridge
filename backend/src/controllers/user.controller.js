@@ -245,9 +245,21 @@ const GetAllChats = asyncHandler(async (req, res) => {
 
   res.json([...map.values()]);
 });
+
+const GetUserByEmail = asyncHandler(async (req, res) => {
+  const { email } = req.params;
+  const user = await User.findOne({ email });
+  
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  
+  res.json({ user: { _id: user._id, fullname: user.fullname } });
+});
 export {
     registerUser,
     loginUser,
+    GetUserByEmail,
     logoutUser,
     Profile,
     ChangePassword,

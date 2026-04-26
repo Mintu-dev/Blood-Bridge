@@ -9,7 +9,8 @@ import {
   EditBio,
   GetMsg,
   SendMsg,
-  GetAllChats
+  GetAllChats,
+  GetUserByEmail
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import {
@@ -34,5 +35,6 @@ router.route("/editbio").post(verifyJWT , EditBio);
 router.route("/sendmsg").post(verifyJWT , SendMsg);
 router.route("/getmsg/:userId").get(verifyJWT,GetMsg);
 router.route("/allchat").get(verifyJWT , GetAllChats);
+router.route("/user-by-email/:email").get(GetUserByEmail);
 
 export default router;
