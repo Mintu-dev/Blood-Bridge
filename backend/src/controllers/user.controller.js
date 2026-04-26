@@ -92,11 +92,11 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     //we are stopping the user to edit cookies
 
-    const option = {
-        httpOnly:true,
-        secure:true,
-        sameSite: "none",
-    }
+  const option = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',  // Production me true
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+};
    return res
   .status(200)
   .cookie("AccessToken", AccessToken, option)
@@ -122,11 +122,11 @@ const logoutUser = asyncHandler(async (req, res) => {
   }
 
   // Cookie options for localhost
-  const option = {
+const option = {
     httpOnly: true,
-    secure: true,    // localhost
-    sameSite: "none",  // cross-origin allow
-  };
+    secure: process.env.NODE_ENV === 'production',  // Production me true
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+};
 
   res
     .status(200)
