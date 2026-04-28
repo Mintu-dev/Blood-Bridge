@@ -1,8 +1,8 @@
-import {asyncHandler} from  "../utils/AsyncHandler.js";
-import { User } from "../../src/models/user.model.js";
-import {ApiError} from "../utils/ApiError.js";
-import {ApiResponse} from "../utils/ApiResponse.js";
-import Message from "../models/chat.model.js";
+import {asyncHandler} from "./utils/AsyncHandler.js";
+import {User} from "./models/user.model.js";
+import {ApiError} from "./utils/ApiError.js";
+import {ApiResponse} from "./utils/ApiResponse.js";
+import Message from "./models/chat.model.js";
 
 const generateAccessandRefreshTokens = async(userId)=>{
     try{
