@@ -10,6 +10,7 @@ import {
   Paper
 } from "@mui/material";
 import { motion } from "framer-motion";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function BloodDonorRegister() {
 
@@ -72,7 +73,7 @@ function BloodDonorRegister() {
     try {
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/user/register-Donar",
+        `${BASE_URL}/api/user/register-Donar`,
         donorData
       );
 

@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import socket from "./socket";
 import NotificationHandler from "./NotificationHandler";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function App() {
   const location = useLocation();
@@ -22,7 +23,7 @@ function App() {
     const connectSocket = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           { withCredentials: true }
         );
 

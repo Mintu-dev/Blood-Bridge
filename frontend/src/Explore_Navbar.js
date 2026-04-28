@@ -5,6 +5,7 @@ import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
 import socket from "./socket";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Explore_Navbar({ setResult }) {
   const [search, setSearch] = useState("");
@@ -47,7 +48,7 @@ function Explore_Navbar({ setResult }) {
     const checkLogin = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           { withCredentials: true }
         );
 
@@ -66,7 +67,7 @@ function Explore_Navbar({ setResult }) {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/user/logout",
+        `${BASE_URL}/api/user/logout`,
         {},
         { withCredentials: true }
       );
@@ -90,7 +91,7 @@ function Explore_Navbar({ setResult }) {
 
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/v1/user/search?type=${encodeURIComponent(value)}`
+        `${BASE_URL}/api/user/search?type=${encodeURIComponent(value)}`
       );
       setResult(res.data);
     } catch (err) {

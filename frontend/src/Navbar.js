@@ -7,6 +7,7 @@ import axios from "axios";
 import socket from "./socket.js";
 import { useLocation } from "react-router-dom";
 import { handleSuccess } from "./utils/Error&SuccessHandler.js";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Navbar() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function Navbar() {
     const checkLogin = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           { withCredentials: true }
         );
 
@@ -70,7 +71,7 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/user/logout",
+        `${BASE_URL}/api/user/logout`,
         {},
         { withCredentials: true }
       );

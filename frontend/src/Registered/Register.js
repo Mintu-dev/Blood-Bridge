@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {handleSuccess , handleError} from "../utils/Error&SuccessHandler.js";
 import Loader from "../Loader.js";
+
 import {
   Box,
   TextField,
@@ -19,6 +20,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { motion } from "framer-motion";
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Register() {
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ function Register() {
     };
     try {
       setLoader(true);
-     const response = await axios.post("http://localhost:8000/api/v1/user/register-user", data);
+     const response = await axios.post(`${BASE_URL}/api/user/register-user`, data);
       console.log("Register successfully");
        setLoader(false);
       handleSuccess(response.data.message);

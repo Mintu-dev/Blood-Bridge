@@ -14,6 +14,7 @@ import "aos/dist/aos.css";
 
 //  ADD THIS IMPORT
 import socket from "../socket";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Login() {
   useEffect(() => {
@@ -38,7 +39,7 @@ function Login() {
       setLoader(true);
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/user/login-user",
+        `${BASE_URL}/api/user/login-user`,
         { username, password },
         {
           withCredentials: true,

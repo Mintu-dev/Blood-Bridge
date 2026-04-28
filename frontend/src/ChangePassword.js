@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function ChangePassword() {
   useEffect(() => {
@@ -35,7 +36,7 @@ function ChangePassword() {
       setLoader(true);
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/user/change-password",
+        `${BASE_URL}/api/user/change-password`,
         { oldPassword: currentPassword, newPassword },
         {
           withCredentials: true, 

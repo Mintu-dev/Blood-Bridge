@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import socket from "./socket";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function NotificationHandler() {
   useEffect(() => {
@@ -8,7 +9,7 @@ function NotificationHandler() {
     // ✅ Get My ID from API
     const getMyProfile = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/user/profile", {
+        const res = await fetch(`${BASE_URL}/api/user/profile`, {
           credentials: "include"
         });
         const data = await res.json();

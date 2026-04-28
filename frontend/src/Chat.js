@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "./socket";
 import { useParams } from "react-router-dom";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Chat() {
   const { userId } = useParams();
@@ -9,6 +10,7 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [myId, setMyId] = useState("");
+
 
   // SOCKET CONNECT
   useEffect(() => {
@@ -24,7 +26,7 @@ function Chat() {
   const getUser = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/user/profile",
+        `${BASE_URL}/api/user/profile`,
         { withCredentials: true }
       );
 
@@ -54,7 +56,7 @@ function Chat() {
 
   const fetchMessages = async () => {
     const res = await axios.get(
-      `http://localhost:8000/api/v1/user/getmsg/${userId}`,
+      `${BASE_URL}/api/user/getmsg/${userId}`,
       { withCredentials: true }
     );
     

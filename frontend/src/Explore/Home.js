@@ -11,6 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader.js";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 export default function Home({ result }) {
   const [donars, setDonars] = useState([]);
@@ -21,7 +22,7 @@ export default function Home({ result }) {
     const checkLogin = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           { withCredentials: true }
         );
         if (res.data) {
@@ -48,7 +49,7 @@ export default function Home({ result }) {
     try {
       setLoading(true);
       const res = await axios.get(
-        "http://localhost:8000/api/v1/user/all-donar"
+        `${BASE_URL}/api/user/all-donar`
       );
       setDonars(res.data.data || []);
     } catch (error) {

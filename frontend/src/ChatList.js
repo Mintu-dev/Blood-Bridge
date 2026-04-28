@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "./socket";
 import { useNavigate } from "react-router-dom";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function ChatList() {
   const [chats, setChats] = useState([]);
@@ -14,7 +15,7 @@ function ChatList() {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           { withCredentials: true }
         );
 
@@ -43,7 +44,7 @@ function ChatList() {
     const fetchChats = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/allchat",
+          `${BASE_URL}/api/user/allchat`,
           { withCredentials: true }
         );
 

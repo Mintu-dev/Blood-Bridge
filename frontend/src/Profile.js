@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
+const BASE_URL = process.env.REACT_APP_BACKEND;
 export default function Profile() {
 
    React.useEffect(() => {
@@ -27,7 +28,7 @@ export default function Profile() {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/user/profile",
+          `${BASE_URL}/api/user/profile`,
           {
             withCredentials: true,
           }
@@ -54,7 +55,7 @@ export default function Profile() {
   React.useEffect(() => {
   const getUser = async () => {
     const res = await axios.get(
-      "http://localhost:8000/api/v1/user/profile",
+      `${BASE_URL}/api/user/profile`,
       { withCredentials: true }
     );
     setMyId(res.data.user._id);
