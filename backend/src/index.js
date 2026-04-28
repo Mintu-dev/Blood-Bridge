@@ -9,10 +9,10 @@ const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
-// ✅ ALLOWED ORIGINS
+//  ALLOWED ORIGINS
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lifeconnect-frontend.onrender.com",  // 🔥 Apna frontend URL dalna
+  "https://lifeconnect-frontend.onrender.com",  //  Apna frontend URL dalna
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
         return;
       }
 
-      // 💾 SAVE MESSAGE
+      //  SAVE MESSAGE
       const savedMsg = await Message.create({
         sender,
         receiver,
@@ -85,19 +85,19 @@ io.on("connection", (socket) => {
       }
       console.log("✅ MESSAGE SAVED:", savedMsg);
 
-      // 🔥 POPULATE
+      //  POPULATE
       const populatedMsg = await Message.findById(savedMsg._id)
         .populate("sender", "_id fullname username")
         .populate("receiver", "_id fullname username");
 
-      // 📡 SEND TO RECEIVER
+      //  SEND TO RECEIVER
       const receiverSocketId = onlineUsers[receiver];
 
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("receiveMessage", populatedMsg);
       }
 
-      // 📡 SEND BACK TO SENDER
+      //  SEND BACK TO SENDER
       socket.emit("messageSent", populatedMsg);
 
     } catch (err) {
@@ -105,7 +105,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ✅ DISCONNECT
+  //  DISCONNECT
   socket.on("disconnect", () => {
     for (let userId in onlineUsers) {
       if (onlineUsers[userId] === socket.id) {
@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅ DATABASE CONNECTION
+// ✅DATABASE CONNECTION
 (async () => {
   try {
     if (!process.env.DB_CONNECTION) {

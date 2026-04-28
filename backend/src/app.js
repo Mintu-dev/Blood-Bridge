@@ -7,7 +7,7 @@ import userRoutes from "./routes/user.routes.js";
 // ✅ ALLOWED ORIGINS
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lifeconnect-frontend.onrender.com",  // 🔥 Apna frontend URL dalna
+  "https://lifeconnect-frontend.onrender.com",  //  Apna frontend URL dalna
   process.env.FRONTEND_URL,  // Environment variable se bhi le sakte ho
 ].filter(Boolean);  // Null/undefined values hata dega
 
@@ -40,6 +40,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/v1/user", userRoutes);
+app.use("/api/user", userRoutes);
 
 export { app };
