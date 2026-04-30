@@ -33,8 +33,11 @@
     "eject": "react-scripts eject"
   },
   "engines": {
-  "node": "20.x"
-},
+    "node": "20.x"
+  },
+  "overrides": {
+    "webpack": "5.64.4"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
