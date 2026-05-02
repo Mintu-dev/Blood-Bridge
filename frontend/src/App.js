@@ -10,6 +10,9 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import socket from "./socket";
 import NotificationHandler from "./NotificationHandler";
+import AOS from "aos";        // ✅ ADD THIS
+import "aos/dist/aos.css";    // ✅ ADD THIS (agar already import hai toh mat dalo)
+
 const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function App() {
@@ -17,6 +20,33 @@ function App() {
   const [result, setResult] = useState(undefined);
 
   const isExplore = location.pathname === "/explore";
+
+  // ✅ ADD THIS AOS INITIALIZATION
+  useEffect(() => {
+    // Initialize AOS safely
+    if (typeof window !== 'undefined') {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        mirror: false,
+        offset: 100
+      });
+    }
+
+    // Cleanup function to prevent the error
+    return () => {
+      if (typeof window !== 'undefined') {
+        const aosElements = document.querySelectorAll('[data-aos]');
+        aosElements.forEach(el => {
+          el.removeAttribute('data-aos');
+        });
+        // Destroy AOS if method exists (optional)
+        if (AOS && typeof AOS.destroy === 'function') {
+          AOS.destroy();
+        }
+      }
+    };
+  }, []);
 
   // 🔥 REGISTER SOCKET ON APP LOAD
   useEffect(() => {
