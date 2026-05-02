@@ -4,12 +4,14 @@ import express from "express";
 const app = express();
 import userRoutes from "./routes/user.routes.js";
 
-// ✅ ALLOWED ORIGINS
+// ✅ UPDATED ALLOWED ORIGINS - Complete list
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lifeconnect-frontend.onrender.com",  //  Apna frontend URL dalna
-  process.env.FRONTEND_URL,  // Environment variable se bhi le sakte ho
-].filter(Boolean);  // Null/undefined values hata dega
+  "https://lifeconnect-frontend.onrender.com",
+  "https://life-connect-ozat.vercel.app",
+  "https://life-connect-ozat-git-main-shreyansh-sharduls-projects.vercel.app",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
 app.use(
   cors({
@@ -25,8 +27,14 @@ app.use(
       }
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie']
   })
 );
+
+// Handle preflight requests
+app.options('*', cors());
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

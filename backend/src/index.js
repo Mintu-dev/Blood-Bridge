@@ -9,10 +9,12 @@ const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
-//  ALLOWED ORIGINS
+// ✅ UPDATED ALLOWED ORIGINS - Complete list
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lifeconnect-frontend.onrender.com",  //  Apna frontend URL dalna
+  "https://lifeconnect-frontend.onrender.com",
+  "https://life-connect-ozat.vercel.app",
+  "https://life-connect-ozat-git-main-shreyansh-sharduls-projects.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -30,6 +32,8 @@ const io = new Server(server, {
     },
     credentials: true,
     methods: ["GET", "POST"],
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
   },
 });
 
@@ -68,7 +72,7 @@ io.on("connection", (socket) => {
         return;
       }
 
-      //  SAVE MESSAGE
+      // SAVE MESSAGE
       const savedMsg = await Message.create({
         sender,
         receiver,
@@ -85,19 +89,19 @@ io.on("connection", (socket) => {
       }
       console.log("✅ MESSAGE SAVED:", savedMsg);
 
-      //  POPULATE
+      // POPULATE
       const populatedMsg = await Message.findById(savedMsg._id)
         .populate("sender", "_id fullname username")
         .populate("receiver", "_id fullname username");
 
-      //  SEND TO RECEIVER
+      // SEND TO RECEIVER
       const receiverSocketId = onlineUsers[receiver];
 
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("receiveMessage", populatedMsg);
       }
 
-      //  SEND BACK TO SENDER
+      // SEND BACK TO SENDER
       socket.emit("messageSent", populatedMsg);
 
     } catch (err) {
@@ -105,7 +109,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //  DISCONNECT
+  // DISCONNECT
   socket.on("disconnect", () => {
     for (let userId in onlineUsers) {
       if (onlineUsers[userId] === socket.id) {
@@ -116,7 +120,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅DATABASE CONNECTION
+// ✅ DATABASE CONNECTION
 (async () => {
   try {
     if (!process.env.DB_CONNECTION) {
