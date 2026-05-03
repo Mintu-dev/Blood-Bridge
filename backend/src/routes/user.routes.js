@@ -24,7 +24,7 @@ const router = Router();
 
 router.route("/register-user").post(registerValidation , registerUser);
 router.route("/login-user").post(loginValidation , loginUser);
-router.route("/register-Donar").post(donorValidation,registerDonor);
+router.route("/register-Donar").post(verifyJWT,donorValidation,registerDonor);
 router.route("/all-donar").get( getDonar);
 router.route("/search").get(searchType);
 router.route("/logout").post(logoutUser);
