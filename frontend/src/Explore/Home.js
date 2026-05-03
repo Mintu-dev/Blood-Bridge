@@ -174,7 +174,7 @@ export default function Home({ result }) {
       // ✅ Donor ke email se user ID fetch karo
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/user/user-by-email/${donar.email}`
+          `${BASE_URL}/api/user/user-by-email/${donar.email}`
         );
         const userId = res.data.user._id;
         console.log("✅ Actual User ID:", userId);
