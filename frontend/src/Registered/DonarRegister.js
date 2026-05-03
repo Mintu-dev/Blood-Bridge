@@ -74,7 +74,8 @@ function BloodDonorRegister() {
 
       const response = await axios.post(
         `${BASE_URL}/api/user/register-Donar`,
-        donorData
+        donorData,
+        { withCredentials: true }
       );
 
       console.log(response);
