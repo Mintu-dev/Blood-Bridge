@@ -18,16 +18,13 @@ const registerDonor = asyncHandler(async (req, res) => {
     anyMedicalConditions
   } = req.body;
 
-  // check existing donor
+  // Check existing donor
   const existingDonor = await Donar.findOne({ email });
-
   if (existingDonor) {
-    return res
-    .status(409)
-    .json({message:"Donar already exist!" , success:false})
+    return res.status(409).json({ message: "Donor already exists!", success: false });
   }
 
-  // create donor
+  // ✅ Add user ID from logged-in user (verifyJWT se aayega)
   const newDonor = await Donar.create({
     fullName,
     email,
@@ -39,19 +36,19 @@ const registerDonor = asyncHandler(async (req, res) => {
     weight,
     height,
     lastDonationDate,
-    anyMedicalConditions
+    anyMedicalConditions,
+    user: req.user._id   // ✅ YEH LINE ADD KARO
   });
 
   if (!newDonor) {
-    return res
-    .status(500)
-    .json({message:"Failed to registered donar" , success:false})
+    return res.status(500).json({ message: "Failed to register donor", success: false });
   }
 
-
-  return res.status(201).json(
-   {message:"Donar registered successfully" , success:true ,newDonor}
-  );
+  return res.status(201).json({
+    message: "Donor registered successfully",
+    success: true,
+    newDonor
+  });
 });
 
 const getDonar = asyncHandler(async(req,res)=>{
