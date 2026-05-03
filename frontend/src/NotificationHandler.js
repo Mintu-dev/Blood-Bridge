@@ -1,28 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import socket from "./socket";
 const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function NotificationHandler() {
-  useEffect(() => {
-    let myId = null;
+  const [myId, setMyId] = useState(null);
 
-    // ✅ Get My ID from API
+  // ✅ Get My ID from API
+  useEffect(() => {
     const getMyProfile = async () => {
       try {
         const res = await fetch(`${BASE_URL}/api/user/profile`, {
           credentials: "include"
         });
         const data = await res.json();
-        myId = data.user?._id;
-        console.log("🔔 Notification Handler - MY ID:", myId);
+        if (data.user?._id) {
+          setMyId(data.user._id);
+          console.log("🔔 Notification Handler - MY ID:", data.user._id);
+        }
       } catch (err) {
         console.log("❌ Notification handler profile error:", err);
       }
     };
 
     getMyProfile();
+  }, []);
 
-    // ✅ ALWAYS LISTEN for incoming messages
+  // ✅ Listen for messages ONLY after myId is available
+  useEffect(() => {
+    if (!myId) return; // Wait until we have myId
+
     const handleNewMessage = (msg) => {
       console.log("📩 NOTIFICATION HANDLER RECEIVED:", msg);
 
@@ -30,7 +36,7 @@ function NotificationHandler() {
       const senderId = msg.sender?._id || msg.sender;
 
       // ✅ Only count if I'm the receiver
-      if (myId && String(receiverId) === String(myId)) {
+      if (String(receiverId) === String(myId)) {
         console.log("✅ Message is for ME, updating localStorage");
 
         // Get current unread counts
@@ -53,9 +59,9 @@ function NotificationHandler() {
     return () => {
       socket.off("receiveMessage", handleNewMessage);
     };
-  }, []);
+  }, [myId]); // Re-run when myId changes
 
-  return null; // This component doesn't render anything
+  return null;
 }
 
 export default NotificationHandler;
