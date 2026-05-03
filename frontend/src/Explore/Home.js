@@ -176,6 +176,8 @@ export default function Home({ result }) {
         const res = await axios.get(
           `${BASE_URL}/api/user/user-by-email/${donar.email}`
         );
+        console.log("Full API Response:", res.data)
+        console.log("Donor email:", donar.email)
         const userId = res.data.user._id;
         console.log("✅ Actual User ID:", userId);
         navigate(`/chat/${userId}`);
