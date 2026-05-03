@@ -6,18 +6,13 @@ import { useEffect } from "react";
 
 function Features() {
 
-   useEffect(() => {
+  useEffect(() => {
     AOS.init({
-      duration: 200,  
-      once: false        
+      duration: 200,
+      once: false
     });
-
     AOS.refresh();
-    
   }, []);
-
-  
-
 
   return (
     <div className="container mt-5 mb-5">
@@ -107,11 +102,11 @@ function Features() {
               </div>
 
               <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Location-Based Search
+                Real-Time Availability
               </h6>
               <p>
-                Find donors or recipients in your area instantly with our smart
-                geolocation system.
+                See donor availability status instantly with live updates and
+                smart scheduling.
               </p>
             </div>
           </div>
@@ -143,11 +138,11 @@ function Features() {
               </div>
 
               <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Location-Based Search
+                Verified Donors
               </h6>
               <p>
-                Find donors or recipients in your area instantly with our smart
-                geolocation system.
+                Every donor is verified through a rigorous process to ensure
+                safety and trust.
               </p>
             </div>
           </div>
@@ -179,11 +174,11 @@ function Features() {
               </div>
 
               <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Location-Based Search
+                Instant Notifications
               </h6>
               <p>
-                Find donors or recipients in your area instantly with our smart
-                geolocation system.
+                Get notified immediately when a matching donor is found near
+                your location.
               </p>
             </div>
           </div>
