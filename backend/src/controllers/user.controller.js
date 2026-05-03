@@ -4,6 +4,8 @@ import {ApiError} from "../utils/ApiError.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
 import Message from "../models/chat.model.js";
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const generateAccessandRefreshTokens = async(userId)=>{
     try{
         const user = await User.findById(userId);
@@ -95,7 +97,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     
     const option = {
         httpOnly: true,
-        secure: isProduction,              // ✅ Production mein true
+        secure: process.env.NODE_ENV === 'production',          
         sameSite: 'none',                   // ✅ Cross-origin ke liye 'none'
         
         path: '/',
