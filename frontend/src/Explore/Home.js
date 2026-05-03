@@ -21,9 +21,10 @@ export default function Home({ result }) {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/user/profile`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${BASE_URL}/api/user/profile`,
+          { withCredentials: true }
+        );
         if (res.data) {
           setIsLoggedIn(true);
         }
@@ -47,7 +48,9 @@ export default function Home({ result }) {
   const handler = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BASE_URL}/api/user/all-donar`);
+      const res = await axios.get(
+        `${BASE_URL}/api/user/all-donar`
+      );
       setDonars(res.data.data || []);
     } catch (error) {
       console.log(error);
@@ -81,7 +84,8 @@ export default function Home({ result }) {
           style={{
             padding: "3px",
             borderRadius: "50px",
-            background: "linear-gradient(270deg,#ff0000,#ff7b7b,#ff0000)",
+            background:
+              "linear-gradient(270deg,#ff0000,#ff7b7b,#ff0000)",
             backgroundSize: "400% 400%",
             animation: "borderMove 4s linear infinite",
           }}
@@ -106,7 +110,9 @@ export default function Home({ result }) {
 
       {/* NO RESULT */}
       {isSearching && dataToShow.length === 0 ? (
-        <h3 style={{ textAlign: "center", color: "white" }}>No donor found</h3>
+        <h3 style={{ textAlign: "center", color: "white" }}>
+          No donor found
+        </h3>
       ) : (
         <div
           style={{
@@ -151,45 +157,45 @@ export default function Home({ result }) {
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }}>
-                    {donar.fullName ? donar.fullName[0].toUpperCase() : "U"}
+                    {donar.fullName
+                      ? donar.fullName[0].toUpperCase()
+                      : "U"}
                   </Avatar>
                 }
+
                 // 🔥 UPDATED ACTION (💬 added)
                 action={
                   <>
-                    <IconButton
-                      onClick={async () => {
-                        if (!isLoggedIn) {
-                          navigate("/login");
-                        } else {
-                          try {
-                            const res = await axios.get(
-                              `${BASE_URL}/api/user/user-by-email/${donar.email}`,
-                            );
-                            console.log("Full API Response:", res.data);
-                            console.log("Donor email:", donar.email);
-                            const userId = res.data.user._id;
-                            console.log("✅ Actual User ID:", userId);
-
-                            // ❌ COMMENT THIS LINE
-                            // navigate(`/chat/${userId}`);
-
-                            // ✅ USE THIS INSTEAD
-                            window.location.href = `/chat/${userId}`;
-                          } catch (err) {
-                            console.log("❌ User not found for this donor");
-                          }
-                        }
-                      }}
-                    >
-                      💬
-                    </IconButton>
+                   <IconButton
+  onClick={async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      // ✅ Donor ke email se user ID fetch karo
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/user/user-by-email/${donar.email}`
+        );
+        console.log("Full API Response:", res.data);
+        console.log("Donor email:", donar.email);
+        const userId = res.data.user._id;
+        console.log("✅ Actual User ID:", userId);
+        navigate(`/chat/${userId}`);
+      } catch (err) {
+        console.log("❌ User not found for this donor");
+      }
+    }
+  }}
+>
+  💬
+</IconButton>
 
                     <IconButton>
                       <MoreVertIcon />
                     </IconButton>
                   </>
                 }
+
                 title={donar.fullName}
                 subheader={
                   donar.createdAt
