@@ -92,13 +92,12 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     //we are stopping the user to edit cookies
 
- const isProduction = process.env.NODE_ENV === 'production';
     
     const option = {
         httpOnly: true,
         secure: isProduction,              // ✅ Production mein true
         sameSite: 'none',                   // ✅ Cross-origin ke liye 'none'
-        domain: isProduction ? '.onrender.com' : undefined,  // ✅ ADD THIS LINE
+        
         path: '/',
         maxAge: 7 * 24 * 60 * 60 * 1000     // 7 days
     };
@@ -132,7 +131,6 @@ const option = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'none',
-    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined,  // ✅ ADD
     path: '/'
 };
 
