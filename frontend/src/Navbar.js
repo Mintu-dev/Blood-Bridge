@@ -99,7 +99,7 @@ function Navbar() {
           className="navbar-brand fw-bold lifeconnect d-flex align-items-center gap-2"
         >
           <i className="bi bi-droplet-fill blood-icon"></i>
-          <span className="life-text">𝓛𝓲𝓯𝓮</span>
+          <span className="life-text">Life</span>
           <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
         </HashLink>
 
