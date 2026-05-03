@@ -15,6 +15,8 @@ const allowedOrigins = [
   "https://lifeconnect-frontend.onrender.com",
   "https://life-connect-ozat.vercel.app",
   "https://life-connect-ozat-git-main-shreyansh-sharduls-projects.vercel.app",
+  "https://www.lifeconnect.in",          
+  "https://lifeconnect.in",   
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
