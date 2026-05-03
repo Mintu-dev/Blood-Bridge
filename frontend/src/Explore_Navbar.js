@@ -21,7 +21,7 @@ function Explore_Navbar({ setResult }) {
     }
   };
 
-  // ✅ NOTIFICATION - Check localStorage every 1 second
+  //  NOTIFICATION - Check localStorage every 1 second
   useEffect(() => {
     const updateUnread = () => {
       try {
@@ -43,7 +43,7 @@ function Explore_Navbar({ setResult }) {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ LOGIN + SOCKET REGISTER
+  //  LOGIN + SOCKET REGISTER
   useEffect(() => {
     const checkLogin = async () => {
       try {
@@ -103,7 +103,7 @@ function Explore_Navbar({ setResult }) {
     <nav className="navbar navbar-expand-lg bg-white py-2 py-lg-3 sticky-top shadow-sm">
       <div className="container">
 
-        {/* ✅ BRAND - Responsive */}
+        {/*  BRAND - Responsive */}
         <HashLink smooth to="/#hero" onClick={closeNavbar}
           className="navbar-brand fw-bold lifeconnect d-flex align-items-center gap-2">
           <i className="bi bi-droplet-fill blood-icon"></i>
@@ -111,7 +111,7 @@ function Explore_Navbar({ setResult }) {
           <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
         </HashLink>
 
-        {/* ✅ SEARCH BAR - Hide on mobile, show in menu */}
+        {/* SEARCH BAR - Hide on mobile, show in menu */}
         <form className="d-none d-md-flex ms-3 flex-grow-1 mx-lg-4" onSubmit={(e) => e.preventDefault()}>
           <div className="input-group">
             <span className="input-group-text bg-white border-end-0">
@@ -127,7 +127,7 @@ function Explore_Navbar({ setResult }) {
           </div>
         </form>
 
-        {/* ✅ Mobile Right Icons */}
+        {/*  Mobile Right Icons */}
         <div className="d-flex align-items-center gap-2 d-lg-none">
           {isLoggedIn && (
             <>
@@ -163,11 +163,11 @@ function Explore_Navbar({ setResult }) {
           </button>
         </div>
 
-        {/* ✅ Collapsible Menu */}
+        {/*  Collapsible Menu */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-1 gap-lg-3 align-items-lg-center py-2 py-lg-0">
 
-            {/* ✅ Mobile Search Bar */}
+            {/*  Mobile Search Bar */}
             <div className="d-md-none px-3 pb-2">
               <div className="input-group">
                 <span className="input-group-text bg-light border-end-0">
@@ -185,7 +185,7 @@ function Explore_Navbar({ setResult }) {
             <div className="border-top d-lg-none my-2"></div>
 
             {!isLoggedIn ? (
-              /* ✅ LOGGED OUT */
+              /*  LOGGED OUT */
               <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 px-3 px-lg-0">
                 <Link to="/login" className="nav-link signin text-center" onClick={closeNavbar}>
                   Login
@@ -195,10 +195,10 @@ function Explore_Navbar({ setResult }) {
                 </Link>
               </div>
             ) : (
-              /* ✅ LOGGED IN */
+              /*  LOGGED IN */
               <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 align-items-lg-center px-3 px-lg-0">
                 
-                {/* ✅ Desktop: Bell icon with badge */}
+                {/*  Desktop: Bell icon with badge */}
                 <Link 
                   to="/allchat" 
                   className="nav-link position-relative d-none d-lg-inline-block"
@@ -213,17 +213,17 @@ function Explore_Navbar({ setResult }) {
                   )}
                 </Link>
 
-                {/* ✅ Mobile: Messages link */}
+                {/* Mobile: Messages link */}
                 <Link to="/allchat" className="nav-link d-lg-none px-3 py-2" onClick={closeNavbar}>
                   💬 Messages {unread > 0 && <span className="ms-1">({unread})</span>}
                 </Link>
 
-                {/* ✅ Desktop: Profile icon */}
+                {/*  Desktop: Profile icon */}
                 <Link to="/profile" className="nav-link d-none d-lg-inline-block" onClick={closeNavbar}>
                   <i className="fa-solid fa-circle-user fs-3"></i>
                 </Link>
 
-                {/* ✅ Mobile: Profile link */}
+                {/*  Mobile: Profile link */}
                 <Link to="/profile" className="nav-link d-lg-none px-3 py-2" onClick={closeNavbar}>
                   👤 Profile
                 </Link>

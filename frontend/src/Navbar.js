@@ -16,7 +16,7 @@ function Navbar() {
   const [myId, setMyId] = useState("");
   const location = useLocation();
 
-  // ✅ NOTIFICATION
+  // NOTIFICATION
   useEffect(() => {
     const updateUnread = () => {
       try {
@@ -38,7 +38,7 @@ function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ LOGIN CHECK + SOCKET
+  //  LOGIN CHECK + SOCKET
   useEffect(() => {
     const checkLogin = async () => {
       try {
@@ -91,7 +91,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg bg-white py-2 py-lg-3 sticky-top shadow-sm">
       <div className="container">
 
-        {/* ✅ BRAND - Responsive font */}
+        {/*  BRAND - Responsive font */}
         <HashLink
           smooth
           to="/#hero"
@@ -103,7 +103,7 @@ function Navbar() {
           <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
         </HashLink>
 
-        {/* ✅ Mobile Right Icons (Hide on Desktop) */}
+        {/*  Mobile Right Icons (Hide on Desktop) */}
         <div className="d-flex align-items-center gap-2 d-lg-none">
           {isLoggedIn && (
             <>
@@ -139,7 +139,7 @@ function Navbar() {
           </button>
         </div>
 
-        {/* ✅ Collapsible Menu */}
+        {/*  Collapsible Menu */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-1 gap-lg-3 align-items-lg-center py-2 py-lg-0">
 
@@ -160,7 +160,7 @@ function Navbar() {
             <div className="border-top d-lg-none my-2"></div>
 
             {!isLoggedIn ? (
-              /* ✅ LOGGED OUT */
+              /*  LOGGED OUT */
               <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 px-3 px-lg-0">
                 <Link to="/login" className="nav-link signin text-center" onClick={closeNavbar}>
                   Login
@@ -170,10 +170,10 @@ function Navbar() {
                 </Link>
               </div>
             ) : (
-              /* ✅ LOGGED IN */
+              /*  LOGGED IN */
               <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 align-items-lg-center px-3 px-lg-0">
                 
-                {/* ✅ Desktop: Bell icon with badge */}
+                {/*  Desktop: Bell icon with badge */}
                 <Link 
                   to="/allchat" 
                   className="nav-link position-relative d-none d-lg-inline-block"
@@ -188,17 +188,17 @@ function Navbar() {
                   )}
                 </Link>
 
-                {/* ✅ Mobile: Messages link */}
+                {/* Mobile: Messages link */}
                 <Link to="/allchat" className="nav-link d-lg-none px-3 py-2" onClick={closeNavbar}>
                   💬 Messages {unread > 0 && <span className="ms-1">({unread})</span>}
                 </Link>
 
-                {/* ✅ Desktop: Profile icon */}
+                {/* Desktop: Profile icon */}
                 <Link to="/profile" className="nav-link d-none d-lg-inline-block" onClick={closeNavbar}>
                   <i className="fa-solid fa-circle-user fs-3"></i>
                 </Link>
 
-                {/* ✅ Mobile: Profile link */}
+                {/*Mobile: Profile link */}
                 <Link to="/profile" className="nav-link d-lg-none px-3 py-2" onClick={closeNavbar}>
                   👤 Profile
                 </Link>

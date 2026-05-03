@@ -70,7 +70,7 @@ function ChatList() {
     fetchChats();
   }, []);
 
-  // ✅ FUNCTION TO UPDATE LOCALSTORAGE & NOTIFY NAVBAR
+  // FUNCTION TO UPDATE LOCALSTORAGE & NOTIFY NAVBAR
   const updateUnreadStorage = (chatsArray) => {
     const unreadCounts = {};
     chatsArray.forEach(c => {
@@ -137,7 +137,7 @@ function ChatList() {
           ];
         }
 
-        // ✅ UPDATE LOCALSTORAGE
+        //  UPDATE LOCALSTORAGE
         updateUnreadStorage(updated);
         return updated;
       });
@@ -151,7 +151,7 @@ function ChatList() {
     let otherId = chat.user?._id || chat._id;
     if (!otherId || String(otherId) === String(myId)) return;
 
-    // ✅ Reset unread for this chat
+    //  Reset unread for this chat
     setChats(prev => {
       const updated = prev.map(c => {
         const cId = c.user?._id || c._id;
@@ -161,7 +161,7 @@ function ChatList() {
         return c;
       });
 
-      // ✅ UPDATE LOCALSTORAGE
+      //  UPDATE LOCALSTORAGE
       updateUnreadStorage(updated);
       return updated;
     });
@@ -169,13 +169,13 @@ function ChatList() {
     navigate(`/chat/${otherId}`);
   };
 
-  // ✅ Filter chats by search
+  //  Filter chats by search
   const filteredChats = chats.filter(chat => {
     const name = (chat.fullname || chat.user?.fullname || '').toLowerCase();
     return name.includes(searchTerm.toLowerCase());
   });
 
-  // ✅ Get time from timestamp
+  //  Get time from timestamp
   const getTime = () => {
     const now = new Date();
     return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

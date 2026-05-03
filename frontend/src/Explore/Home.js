@@ -163,7 +163,7 @@ export default function Home({ result }) {
                   </Avatar>
                 }
 
-                // 🔥 UPDATED ACTION (💬 added)
+                // UPDATED ACTION 
                 action={
                   <>
                    <IconButton
@@ -171,7 +171,7 @@ export default function Home({ result }) {
     if (!isLoggedIn) {
       navigate("/login");
     } else {
-      // ✅ Donor ke email se user ID fetch karo
+      // Donor ke email se user ID fetch karo
       try {
         const res = await axios.get(
           `${BASE_URL}/api/user/user-by-email/${donar.email}`

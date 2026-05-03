@@ -32,7 +32,7 @@ function NotificationHandler() {
       console.log("📩 Message received:", msg);
       console.log("🔍 My ID:", myId);
       
-      // ✅ Get receiver ID properly
+      //  Get receiver ID properly
       let receiverId = msg.receiver;
       if (typeof receiverId === 'object' && receiverId !== null) {
         receiverId = receiverId._id;
@@ -46,7 +46,7 @@ function NotificationHandler() {
       console.log("🔍 Receiver ID from message:", receiverId);
       console.log("🔍 Match?", receiverId === myId);
       
-      // ✅ Check if message is for current user
+      //  Check if message is for current user
       if (String(receiverId) === String(myId)) {
         console.log("✅ Message is for ME!");
         

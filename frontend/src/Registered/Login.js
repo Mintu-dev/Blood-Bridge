@@ -52,7 +52,7 @@ function Login() {
         
         handleSuccess(response.data.message);
 
-        // 🔥 ADD THIS BLOCK (SOCKET REGISTER)
+        //  ADD THIS BLOCK (SOCKET REGISTER)
         if (response.data.user?._id) {
           socket.emit("addUser", response.data.user._id);
         }
