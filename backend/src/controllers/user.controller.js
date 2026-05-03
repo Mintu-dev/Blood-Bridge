@@ -92,20 +92,26 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     //we are stopping the user to edit cookies
 
-  const option = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',  // Production me true
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-};
-   return res
-  .status(200)
-  .cookie("AccessToken", AccessToken, option)
-  .cookie("RefreshToken", RefreshToken, option)
-  .json({
-    success: true,
-    message: "User login successfully",
-    user: loggedInUser,
-  });
+ const isProduction = process.env.NODE_ENV === 'production';
+    
+    const option = {
+        httpOnly: true,
+        secure: isProduction,              // ✅ Production mein true
+        sameSite: 'none',                   // ✅ Cross-origin ke liye 'none'
+        domain: isProduction ? '.onrender.com' : undefined,  // ✅ ADD THIS LINE
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000     // 7 days
+    };
+    
+    return res
+        .status(200)
+        .cookie("AccessToken", AccessToken, option)
+        .cookie("RefreshToken", RefreshToken, option)
+        .json({
+            success: true,
+            message: "User login successfully",
+            user: loggedInUser,
+        });
 
 
 })
@@ -124,8 +130,10 @@ const logoutUser = asyncHandler(async (req, res) => {
   // Cookie options for localhost
 const option = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',  // Production me true
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'none',
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined,  // ✅ ADD
+    path: '/'
 };
 
   res
