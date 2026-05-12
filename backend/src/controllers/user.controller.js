@@ -98,7 +98,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     const option = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',          
-        sameSite: 'none',                   // ✅ Cross-origin ke liye 'none'
+        sameSite: 'none',                   // Cross-origin ke liye 'none'
         
         path: '/',
         maxAge: 7 * 24 * 60 * 60 * 1000     // 7 days
@@ -236,8 +236,22 @@ const GetAllChats = asyncHandler(async (req, res) => {
   const map = new Map();
 
   messages.forEach((msg) => {
-    const isSender = msg.sender._id.toString() === userId.toString();
-    const otherUser = isSender ? msg.receiver : msg.sender;
+
+    // ✅ NULL SAFETY
+    if (!msg.sender || !msg.receiver) {
+      console.log("❌ Broken message found:", msg._id);
+      return;
+    }
+
+    const isSender =
+      msg.sender._id.toString() === userId.toString();
+
+    const otherUser = isSender
+      ? msg.receiver
+      : msg.sender;
+
+    // ✅ EXTRA SAFETY
+    if (!otherUser || !otherUser._id) return;
 
     const key = otherUser._id.toString();
 
@@ -246,7 +260,7 @@ const GetAllChats = asyncHandler(async (req, res) => {
         _id: otherUser._id,
         fullname: otherUser.fullname,
         username: otherUser.username,
-        lastMessage: msg.message, // ✅ FIXED
+        lastMessage: msg.message,
       });
     }
   });
