@@ -27,9 +27,17 @@ function Footer() {
             <h5 className="fw-bold mb-4">Quick Links</h5>
 
             <div className="d-flex flex-column gap-2">
-              <a href="/explore" className="footer-link">Find Donors</a>
-              <a href="/donarregister" className="footer-link">Become a Donor</a>
-              <a href="/" className="footer-link">Emergency</a>
+              <a href="/explore" className="footer-link">
+                Find Donors
+              </a>
+
+              <a href="/donarregister" className="footer-link">
+                Become a Donor
+              </a>
+
+              <a href="/" className="footer-link">
+                Emergency
+              </a>
             </div>
           </div>
 
@@ -39,6 +47,7 @@ function Footer() {
 
             <p className="mb-2">
               <i className="bi bi-envelope-fill me-2"></i>
+
               <a
                 href="mailto:lifeconnect817@gmail.com"
                 className="footer-link"
@@ -46,12 +55,90 @@ function Footer() {
                 lifeconnect817@gmail.com
               </a>
             </p>
-                <p>📞 7766867474 , 7295057281</p>
+
+            <p>📞 7766867474 , 7295057281</p>
+
             <p className="text-light small mt-3">
               We're here to help. Reach out anytime for support or
               collaboration.
             </p>
-            
+
+            {/* OWNER SECTION */}
+            <div
+              style={{
+                marginTop: "25px",
+                padding: "18px",
+                background: "rgba(255,255,255,0.08)",
+                borderRadius: "18px",
+                border: "1px solid rgba(255,255,255,0.12)",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.2)"
+              }}
+            >
+              <p
+                style={{
+                  color: "#F63049",
+                  fontWeight: "700",
+                  letterSpacing: "1px",
+                  marginBottom: "8px",
+                  fontSize: "14px",
+                  textTransform: "uppercase"
+                }}
+              >
+                Founder:
+              </p>
+
+              <h5
+                style={{
+                  margin: 0,
+                  fontWeight: "700",
+                  color: "#fff"
+                }}
+              >
+                Shreyansh Shardul
+              </h5>
+
+              <p
+                style={{
+                  marginTop: "10px",
+                  fontSize: "13px",
+                  color: "#d6d6d6",
+                  lineHeight: "1.7"
+                }}
+              >
+                Creator of LifeConnect — A modern blood donation platform
+                designed to connect donors and recipients through real-time
+                communication and smart technology.
+              </p>
+
+              {/* SOCIAL LINKS */}
+              <div className="d-flex gap-3 mt-3">
+                <a
+                  href="https://github.com/shreyanshshardul"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-icon"
+                >
+                  <i className="bi bi-github"></i>
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/shreyansh-shardul-a591a7258/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-icon"
+                >
+                  <i className="bi bi-linkedin"></i>
+                </a>
+
+                <a
+                  href="mailto:shreyanshshardul7@gmail.com"
+                  className="social-icon"
+                >
+                  <i className="bi bi-envelope-fill"></i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -60,6 +147,10 @@ function Footer() {
 
         <div className="text-center small">
           © {new Date().getFullYear()} LifeConnect. All rights reserved.
+          <br />
+          <span style={{ color: "#F63049" }}>
+            Designed & Developed by Shreyansh Shardul
+          </span>
         </div>
       </div>
 
@@ -84,15 +175,37 @@ function Footer() {
             text-shadow: 0 0 8px red;
           }
 
+          .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+          }
+
+          .social-icon:hover {
+            background: #F63049;
+            transform: translateY(-3px);
+            color: white;
+          }
+
           @keyframes pulseBlood {
             0% {
               transform: scale(1);
               opacity: 1;
             }
+
             50% {
               transform: scale(1.3);
               opacity: 0.7;
             }
+
             100% {
               transform: scale(1);
               opacity: 1;
