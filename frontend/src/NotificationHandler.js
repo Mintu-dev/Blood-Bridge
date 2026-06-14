@@ -48,7 +48,7 @@ function NotificationHandler() {
       
       //  Check if message is for current user
       if (String(receiverId) === String(myId)) {
-        console.log("✅ Message is for ME!");
+        console.log("Message is for ME!");
         
         // Get current unread counts
         let currentUnread = {};

@@ -5,17 +5,19 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 
 function Features() {
-
   useEffect(() => {
     AOS.init({
       duration: 200,
-      once: false
+      once: false,
     });
     AOS.refresh();
   }, []);
 
   return (
-    <div className="container mt-5 mb-5">
+    <div
+      className="container mt-5 mb-5"
+      style={{ paddingBottom: "30px", borderBottom: "1px solid white" }}
+    >
       <div className="row justify-content-center mt-5">
         <div className="col-auto mt-5 text-center">
           <span
@@ -28,7 +30,7 @@ function Features() {
           >
             Features
           </span>
-          <h1 className="mt-4">𝑾𝒉𝒚 𝑪𝒉𝒐𝒐𝒔𝒆 𝑳𝒊𝒇𝒆𝑪𝒐𝒏𝒏𝒆𝒄𝒕?</h1>
+          <h1 className="mt-4">𝑾𝒉𝒚 𝑪𝒉𝒐𝒐𝒔𝒆 𝑩𝒍𝒐𝒐𝒅𝑩𝒓𝒊𝒅𝒈𝒆?</h1>
           <p className="mt-3">
             Powerful features designed to make blood donation simple,
             accessible, and impactful.
@@ -38,7 +40,6 @@ function Features() {
 
       {/* Cards Section */}
       <div className="row mt-5 g-4 align-items-stretch">
-
         {/* Card 1 */}
         <div data-aos="fade-right" className="col-md-6 col-12">
           <div
@@ -65,9 +66,7 @@ function Features() {
                 </h5>
               </div>
 
-              <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Location-Based Search
-              </h6>
+              <h6 className="mb-3 fw-bold fs-4 mt-3">Location-Based Search</h6>
               <p>
                 Find donors or recipients in your area instantly with our smart
                 geolocation system.
@@ -101,9 +100,7 @@ function Features() {
                 </h5>
               </div>
 
-              <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Real-Time Availability
-              </h6>
+              <h6 className="mb-3 fw-bold fs-4 mt-3">Real-Time Availability</h6>
               <p>
                 See donor availability status instantly with live updates and
                 smart scheduling.
@@ -137,9 +134,7 @@ function Features() {
                 </h5>
               </div>
 
-              <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Verified Donors
-              </h6>
+              <h6 className="mb-3 fw-bold fs-4 mt-3">Verified Donors</h6>
               <p>
                 Every donor is verified through a rigorous process to ensure
                 safety and trust.
@@ -173,9 +168,7 @@ function Features() {
                 </h5>
               </div>
 
-              <h6 className="mb-3 fw-bold fs-4 mt-3">
-                Instant Notifications
-              </h6>
+              <h6 className="mb-3 fw-bold fs-4 mt-3">Instant Notifications</h6>
               <p>
                 Get notified immediately when a matching donor is found near
                 your location.
@@ -183,7 +176,6 @@ function Features() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

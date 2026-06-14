@@ -4,19 +4,16 @@ import http from "http";
 import { Server } from "socket.io";
 import Message from "./models/chat.model.js";
 import { User } from "./models/user.model.js";
+import dotenv from "dotenv";
+dotenv.config({ quiet: true });
 
 const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
-// ✅ UPDATED ALLOWED ORIGINS - Complete list
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lifeconnect-frontend.onrender.com",
-  "https://life-connect-ozat.vercel.app",
-  "https://life-connect-ozat-git-main-shreyansh-sharduls-projects.vercel.app",
-  "https://www.lifeconnect.in",          
-  "https://lifeconnect.in",   
+  "http://localhost:8001",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -24,7 +21,7 @@ const io = new Server(server, {
   cors: {
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      
+
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -34,8 +31,8 @@ const io = new Server(server, {
     },
     credentials: true,
     methods: ["GET", "POST"],
-    transports: ['websocket', 'polling'],
-    allowEIO3: true
+    transports: ["websocket", "polling"],
+    allowEIO3: true,
   },
 });
 
@@ -44,13 +41,12 @@ let onlineUsers = {};
 io.on("connection", (socket) => {
   console.log("🟢 New socket:", socket.id);
 
-  // ✅ ADD USER
   socket.on("addUser", (userId) => {
     onlineUsers[userId] = socket.id;
     console.log("🟢 Online Users:", onlineUsers);
   });
 
-  // ✅ SEND MESSAGE
+  //  SEND MESSAGE
   socket.on("sendMessage", async (msg) => {
     try {
       console.log("📥 GOT MESSAGE:", msg);
@@ -63,7 +59,7 @@ io.on("connection", (socket) => {
         return;
       }
 
-      // 🔥 CHECK USERS EXIST
+      //  CHECK USERS EXIST
       const senderUser = await User.findById(sender);
       const receiverUser = await User.findById(receiver);
 
@@ -105,7 +101,6 @@ io.on("connection", (socket) => {
 
       // SEND BACK TO SENDER
       socket.emit("messageSent", populatedMsg);
-
     } catch (err) {
       console.log("❌ MESSAGE ERROR:", err);
     }
@@ -122,7 +117,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅ DATABASE CONNECTION
+//  DATABASE CONNECTION
 (async () => {
   try {
     if (!process.env.DB_CONNECTION) {

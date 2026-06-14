@@ -11,7 +11,6 @@ function Chat() {
   const [text, setText] = useState("");
   const [myId, setMyId] = useState("");
 
-
   // SOCKET CONNECT
   useEffect(() => {
     socket.on("connect", () => {
@@ -22,50 +21,48 @@ function Chat() {
   }, []);
 
   // GET USER
- useEffect(() => {
-  const getUser = async () => {
-    try {
-      const res = await axios.get(
-        `${BASE_URL}/api/user/profile`,
-        { withCredentials: true }
-      );
-
-      const id = res.data.user._id;
-      setMyId(id);
-
-      if (socket.connected) {
-        socket.emit("addUser", id);
-        console.log("👤 MY ID (socket connected):", id);
-      } else {
-        socket.on("connect", () => {
-          socket.emit("addUser", id);
-          console.log("👤 MY ID (on connect):", id);
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/user/profile`, {
+          withCredentials: true,
         });
-      }
-    } catch (err) {
-      console.log("❌ Profile error:", err);
-    }
-  };
 
-  getUser();
-}, []);
+        const id = res.data.user._id;
+        setMyId(id);
+
+        if (socket.connected) {
+          socket.emit("addUser", id);
+          console.log("👤 MY ID (socket connected):", id);
+        } else {
+          socket.on("connect", () => {
+            socket.emit("addUser", id);
+            console.log("👤 MY ID (on connect):", id);
+          });
+        }
+      } catch (err) {
+        console.log("❌ Profile error:", err);
+      }
+    };
+
+    getUser();
+  }, []);
 
   // LOAD MESSAGES
- useEffect(() => {
-  if (!userId) return;
+  useEffect(() => {
+    if (!userId) return;
 
-  const fetchMessages = async () => {
-    const res = await axios.get(
-      `${BASE_URL}/api/user/getmsg/${userId}`,
-      { withCredentials: true }
-    );
-    
-    console.log("📦 OLD MESSAGES:", res.data);  // ✅ Yeh print hota hai?
-    setMessages(res.data || []);
-  };
+    const fetchMessages = async () => {
+      const res = await axios.get(`${BASE_URL}/api/user/getmsg/${userId}`, {
+        withCredentials: true,
+      });
 
-  fetchMessages();
-}, [userId]);
+      console.log("📦 OLD MESSAGES:", res.data);
+      setMessages(res.data || []);
+    };
+
+    fetchMessages();
+  }, [userId]);
 
   // REALTIME
   useEffect(() => {
@@ -74,12 +71,11 @@ function Chat() {
 
       const senderId = msg.sender?._id || msg.sender;
       const receiverId = msg.receiver?._id || msg.receiver;
-       if (!myId || !userId) return;
+      if (!myId || !userId) return;
       console.log("👉 senderId:", senderId);
       console.log("👉 receiverId:", receiverId);
       console.log("👉 MY ID:", myId);
       console.log("👉 CHAT WITH:", userId);
-      
 
       const isValid =
         (String(senderId) === String(myId) &&
@@ -87,7 +83,7 @@ function Chat() {
         (String(senderId) === String(userId) &&
           String(receiverId) === String(myId));
 
-      console.log("✅ isValid:", isValid);
+      console.log(" isValid:", isValid);
 
       if (isValid) {
         setMessages((prev) => [...prev, msg]);
@@ -99,64 +95,94 @@ function Chat() {
   }, [myId, userId]);
 
   // SEND MESSAGE
- const sendMessage = () => {
-  if (!text.trim() || !myId || !userId) {
-    console.log("❌ BLOCKED SEND:", { myId, userId, text });
-    return;
-  }
+  const sendMessage = () => {
+    if (!text.trim() || !myId || !userId) {
+      console.log("❌ BLOCKED SEND:", { myId, userId, text });
+      return;
+    }
 
-  if (myId === userId) {
-    console.log("❌ SENDING TO SELF BLOCKED");
-    return;
-  }
-if (!myId || !userId) return;
-  const msg = {
-    sender: myId,
-    receiver: userId,
-    message: text,
+    if (myId === userId) {
+      console.log("❌ SENDING TO SELF BLOCKED");
+      return;
+    }
+    if (!myId || !userId) return;
+    const msg = {
+      sender: myId,
+      receiver: userId,
+      message: text,
+    };
+
+    console.log("📤 SENDING MSG:", msg);
+
+    socket.emit("sendMessage", msg);
+
+    setMessages((prev) => [...prev, msg]);
+    setText("");
   };
-
-  console.log("📤 SENDING MSG:", msg);
-
-  socket.emit("sendMessage", msg);
-
-  setMessages((prev) => [...prev, msg]);
-  setText("");
-};
 
   console.log("👤 MY ID:", myId);
   console.log("💬 CHAT WITH (URL):", userId);
 
-  return (
-    <div style={{ padding: "20px" }}>
-      <h3>Chat</h3>
 
-      <div style={{ minHeight: "300px" }}>
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "calc(100vh - 80px)",
+        maxWidth: "700px",
+        margin: "0 auto",
+        padding: "0 16px",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "16px 0",
+          borderBottom: "1px solid #eee",
+          fontWeight: "700",
+          fontSize: "18px",
+          color: "#c62828",
+        }}
+      >
+        💬 Chat
+      </div>
+
+      {/* Messages */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "16px 0",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
         {messages.map((msg, i) => {
           const senderId = msg.sender?._id || msg.sender;
-
+          const isMe = String(senderId) === String(myId);
           return (
             <div
               key={i}
               style={{
-                textAlign:
-                  String(senderId) === String(myId) ? "right" : "left",
-                margin: "5px",
+                display: "flex",
+                justifyContent: isMe ? "flex-end" : "flex-start",
               }}
             >
               <span
                 style={{
-                  background:
-                    String(senderId) === String(myId)
-                      ? "#d32f2f"
-                      : "#eee",
-                  color:
-                    String(senderId) === String(myId)
-                      ? "white"
-                      : "black",
-                  padding: "8px 12px",
-                  borderRadius: "10px",
-                  display: "inline-block",
+                  background: isMe
+                    ? "linear-gradient(90deg,#c62828,#ff5252)"
+                    : "#f0f0f0",
+                  color: isMe ? "white" : "black",
+                  padding: "10px 16px",
+                  borderRadius: isMe
+                    ? "18px 18px 4px 18px"
+                    : "18px 18px 18px 4px",
+                  maxWidth: "70%",
+                  fontSize: "14px",
+                  lineHeight: "1.4",
                 }}
               >
                 {msg.message}
@@ -166,13 +192,45 @@ if (!myId || !userId) return;
         })}
       </div>
 
-      <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Type message..."
-      />
-
-      <button onClick={sendMessage}>Send</button>
+      {/* Input */}
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          padding: "12px 0",
+          borderTop: "1px solid #eee",
+        }}
+      >
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="Type a message..."
+          style={{
+            flex: 1,
+            padding: "12px 16px",
+            borderRadius: "25px",
+            border: "1px solid #ddd",
+            outline: "none",
+            fontSize: "14px",
+          }}
+        />
+        <button
+          onClick={sendMessage}
+          style={{
+            background: "linear-gradient(90deg,#c62828,#ff5252)",
+            color: "white",
+            border: "none",
+            borderRadius: "25px",
+            padding: "12px 24px",
+            cursor: "pointer",
+            fontWeight: "600",
+            fontSize: "14px",
+          }}
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }

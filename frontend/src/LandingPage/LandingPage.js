@@ -16,11 +16,14 @@ function LandingPage() {
       </section>
 
       <section id="work">
-        <Work />
+        <Work/>
       </section>
+      <section id="blood-types">
         <BloodType />
+      </section>
+      <section id="difference">
         <Difference />
-    
+      </section>
     </>
   );
 }

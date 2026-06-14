@@ -1,23 +1,25 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-const BASE_URL = process.env.REACT_APP_BACKEND;
-export default function Profile() {
 
-   React.useEffect(() => {
-        AOS.init({
-          duration: 700,  
-          once: false        
-        });
-    
-        AOS.refresh();
-        
-      }, []);
+const BASE_URL = process.env.REACT_APP_BACKEND;
+
+export default function Profile() {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: false,
+    });
+
+    AOS.refresh();
+  }, []);
 
   const [fullname, setFullname] = React.useState("");
-  const [myId , setMyId] = React.useState("");
+  const [ setMyId] = React.useState("");
   const [created, setCreated] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [bio, setBio] = React.useState("");
@@ -27,12 +29,9 @@ export default function Profile() {
   React.useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URL}/api/user/profile`,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(`${BASE_URL}/api/user/profile`, {
+          withCredentials: true,
+        });
 
         setUsername(res.data.user.username);
         setFullname(res.data.user.fullname);
@@ -53,15 +52,14 @@ export default function Profile() {
   }, []);
 
   React.useEffect(() => {
-  const getUser = async () => {
-    const res = await axios.get(
-      `${BASE_URL}/api/user/profile`,
-      { withCredentials: true }
-    );
-    setMyId(res.data.user._id);
-  };
-  getUser();
-}, []);
+    const getUser = async () => {
+      const res = await axios.get(`${BASE_URL}/api/user/profile`, {
+        withCredentials: true,
+      });
+      setMyId(res.data.user._id);
+    };
+    getUser();
+  }, []);
 
   return (
     <div
@@ -71,7 +69,6 @@ export default function Profile() {
       }}
     >
       <div className="container d-flex align-items-center justify-content-center">
-
         {/* CARD */}
         <div
           className="row mt-5 mb-5"
@@ -83,17 +80,39 @@ export default function Profile() {
             backgroundColor: "#D62828",
             boxShadow: "10px 10px 20px rgba(0,0,0,0.3)",
             transition: "0.3s",
+            position: "relative",
           }}
         >
+          <button
+            onClick={() => navigate("/explore", { state: { openMenu: true } })}
+            style={{
+              position: "absolute",
+              top: "15px",
+              right: "15px",
+              background: "rgba(255,255,255,0.2)",
+              border: "none",
+              color: "white",
+              fontSize: "20px",
+              width: "32px",
+              height: "32px",
+              borderRadius: "50%",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 10,
+            }}
+          >
+            ✕
+          </button>
 
           {/* HEADER */}
           <div className="col-12 d-flex align-items-center p-4 flex-wrap">
-
             {/* ICON */}
             <div
               style={{
-                height: "80px",
-                width: "80px",
+                height: "50px",
+                width: "50px",
                 borderRadius: "50%",
                 backgroundColor: "#FF8383",
                 display: "flex",
@@ -111,25 +130,32 @@ export default function Profile() {
                 e.currentTarget.style.backgroundColor = "#FF8383";
               }}
             >
-              <i className="fa-solid fa-user fs-1"></i>
+              <i className="fa-solid fa-user fs-"></i>
             </div>
 
-            {/* USER INFO */}
-            <div className="ms-3 mt-3 mt-md-0" >
-              <h2 style={{ color: "white" }}>{username}</h2>
-              <p style={{ color: "#ffe6e6", margin: 0 }}>
-                Bio: {bio}
-              </p>
-            </div>
-
-          </div>
+            
+             <div className="ms-3 mt-3 mt-md-0">
+              <h2 style={{ color: "white", fontSize: "1.3rem", margin: 0 , marginTop:"-15px"}}>
+                  {username}
+              </h2>
+            {bio && (
+            <p style={{
+                color: "#ffe6e6",
+                margin: "4px 0 0",
+                fontSize: "0.8rem",
+                fontStyle: "italic",
+                opacity: 0.85,
+                maxWidth: "250px",
+             }}>
+            {bio}
+          </p>
+          )}
+        </div>
 
           {/* DETAILS */}
-          <div className="row px-3 px-md-4 pb-4">
-
+          <div className="row px-3 px-md-4 pb-4 mt-3">
             {/* LEFT SIDE */}
             <div className="col-md-6" data-aos="fade-right">
-
               {[
                 { label: "Full Name", value: fullname },
                 { label: "Username", value: username },
@@ -141,9 +167,7 @@ export default function Profile() {
                 },
                 {
                   label: "Date of Birth",
-                  value: dob
-                    ? dob.toLocaleDateString("en-CA")
-                    : "Loading...",
+                  value: dob ? dob.toLocaleDateString("en-CA") : "Loading...",
                 },
                 { label: "Gender", value: gender },
               ].map((item, index) => (
@@ -160,29 +184,26 @@ export default function Profile() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateX(5px)";
-                    e.currentTarget.style.background =
-                      "rgba(255,255,255,0.2)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.2)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateX(0px)";
-                    e.currentTarget.style.background =
-                      "rgba(255,255,255,0.1)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.1)";
                   }}
                 >
                   <span style={{ fontSize: "12px", opacity: 0.8 }}>
                     {item.label}
                   </span>
-                  <p style={{ margin: 0, fontWeight: "500" }}>
-                    {item.value}
-                  </p>
+                  <p style={{ margin: 0, fontWeight: "500" }}>{item.value}</p>
                 </div>
               ))}
-
             </div>
 
             {/* RIGHT SIDE (BUTTONS) */}
-            <div className="col-md-6 d-flex flex-column align-items-center justify-content-center gap-3 mt-4 mt-md-0" data-aos="fade-left">
-
+            <div
+              className="col-md-6 d-flex flex-column align-items-center justify-content-center gap-3 mt-4  mt-md-0 "
+              data-aos="fade-left"
+            >
               {[
                 { text: "Change Password", path: "/changepassword" },
                 { text: "Edit Full Name", path: "/editfullname" },
@@ -194,6 +215,7 @@ export default function Profile() {
                   style={{
                     textDecoration: "none",
                     padding: "12px 25px",
+                    marginLeft:"50px",
                     width: "200px",
                     textAlign: "center",
                     background: "white",
@@ -214,13 +236,11 @@ export default function Profile() {
                   {btn.text}
                 </Link>
               ))}
-
             </div>
-
           </div>
-
         </div>
       </div>
-    </div>
+      </div>
+      </div>
   );
 }

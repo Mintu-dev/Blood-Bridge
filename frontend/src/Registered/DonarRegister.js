@@ -21,13 +21,11 @@ function BloodDonorRegister() {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-  const [height, setHeight] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
-  const [weight, setWeight] = useState("");
   const [lastDonationDate, setLastDonationDate] = useState("");
   const [medicalConditions, setMedicalConditions] = useState("");
 
@@ -43,9 +41,7 @@ function BloodDonorRegister() {
       !phone ||
       !gender ||
       !dob ||
-      !bloodGroup ||
-      !weight ||
-      !height
+      !bloodGroup 
     ) {
       handleError("Please fill all required fields");
       return;
@@ -64,8 +60,6 @@ function BloodDonorRegister() {
         state,
         pincode
       },
-      weight: Number(weight),
-      height: Number(height),
       lastDonationDate: lastDonationDate || null,
       anyMedicalConditions: medicalConditions ? [medicalConditions] : []
     };
@@ -138,7 +132,7 @@ function BloodDonorRegister() {
               fontWeight: "bold",
             }}
           >
-            Join LifeConnect as Donor 🩸
+            Join Blood Bridge as Donor 🩸
           </h2>
 
           {/*  IMPORTANT */}
@@ -172,12 +166,6 @@ function BloodDonorRegister() {
                   <MenuItem key={bg} value={bg}>{bg}</MenuItem>
                 ))}
               </TextField>
-
-              <TextField label="Weight (kg)" type="number"  fullWidth size="small"
-                value={weight} onChange={(e) => setWeight(e.target.value)} />
-
-              <TextField label="Height (cm)" type="number"  fullWidth size="small"
-                value={height} onChange={(e) => setHeight(e.target.value)} />
 
               <TextField label="Street" fullWidth size="small"
                 value={street} onChange={(e) => setStreet(e.target.value)} />

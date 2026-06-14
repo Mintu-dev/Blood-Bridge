@@ -11,10 +11,9 @@ import {
 } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
-//  ADD THIS IMPORT
 import socket from "../socket";
 const BASE_URL = process.env.REACT_APP_BACKEND;
+console.log("BASE_URL:", BASE_URL);
 
 function Login() {
   useEffect(() => {
@@ -101,7 +100,7 @@ function Login() {
               align="center"
               sx={{ fontWeight: "bold", color: "#d32f2f", mb: 1 }}
             >
-              LifeConnect
+              Blood Bridge
             </Typography>
 
             <Typography align="center" sx={{ color: "gray", mb: 4 }}>

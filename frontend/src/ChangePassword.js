@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader.js";
 import {
   Box,
@@ -97,7 +97,7 @@ function ChangePassword() {
             align="center"
             sx={{ fontWeight: "bold", color: "#d32f2f", mb: 1 }}
           >
-            LifeConnect
+            BloodBridge
           </Typography>
 
           <Typography align="center" sx={{ color: "gray", mb: 4 }}>

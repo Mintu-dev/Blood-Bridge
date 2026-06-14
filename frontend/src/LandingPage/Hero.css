@@ -1,12 +1,12 @@
-.Saving{
-    background-color:rgb(231, 205, 205);
-    border-radius:20px;
-    color:red;
+.Saving {
+  background-color: rgb(231, 205, 205);
+  border-radius: 20px;
+  color: red;
 }
-.Hero-section{
+.Hero-section {
   background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 50%, #fce7f3 100%);
-height:100%;
-width:100%;
+  height: 100%;
+  width: 100%;
 }
 
 /* Badge Design */
@@ -44,31 +44,32 @@ width:100%;
   }
 }
 
-.connect{
-    font-size:3.5rem;
-    margin:0;
+.connect {
+  font-size: 3.5rem;
+  margin: 0;
 }
-.save{
-    font-size:3.5rem;
-    color:rgb(233, 38, 38);  
-     margin:0; 
-}
-
-@media (max-width : 576px){
-    .connect {
-        font-size:3rem;
-    }
-     .save {
-        font-size:3rem;
-    }
-    .para{
-        font-size:0.5rem;
-    }
+.save {
+  font-size: 3.5rem;
+  color: rgb(233, 38, 38);
+  margin: 0;
 }
 
-.box{
-    line-height:1.1;
+@media (max-width: 576px) {
+  .connect {
+    font-size: 2rem;
+  }
+  .save {
+    font-size: 2rem;
+  }
+  .para {
+    font-size: 0.4rem;
+  }
 }
+
+.box {
+  line-height: 1.1;
+}
+
 .outer {
   width: 60%;
   aspect-ratio: 1 / 1;
@@ -78,6 +79,9 @@ width:100%;
   justify-content: center;
   align-items: center;
   animation: upDown 4s ease-in-out infinite;
+  margin-top: -80px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .inner {
   width: 85%;
@@ -106,29 +110,29 @@ width:100%;
   object-fit: contain;
 }
 
-.becomeDonar:hover{
-    box-shadow:4px 7px 10px #BF1A1A;
-    background-color:#BF1A1A;
+.becomeDonar:hover {
+  box-shadow: 4px 7px 10px #bf1a1a;
+  background-color: #bf1a1a;
 }
-.findDonar{
-  color:rgba(0, 0, 0, 0.458);
-  border:1px solid rgba(0, 0, 0, 0.458);
-  padding-left:5px;
-  padding-right:5px;
+.findDonar {
+  color: rgba(0, 0, 0, 0.458);
+  border: 1px solid rgba(0, 0, 0, 0.458);
+  padding-left: 5px;
+  padding-right: 5px;
 }
-.findDonar:hover{
-  box-shadow:2px 2px 15px;
-  border:none;
+.findDonar:hover {
+  box-shadow: 2px 2px 15px;
+  border: none;
 }
 
 .stat-box {
   background-color: white;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .stat-box h2 {
-  color: #F63049;
+  color: #f63049;
   margin: 0;
   line-height: 1.2;
 }
@@ -138,7 +142,9 @@ width:100%;
   font-size: 14px;
   color: #555;
 }
-
+.hero-img-wrapper {
+  margin-top: -30px;
+}
 
 /* Mobile + Ultra small fix */
 @media (max-width: 768px) {
@@ -146,12 +152,30 @@ width:100%;
     display: flex;
     justify-content: center;
   }
+  .hero-img-wrapper {
+    margin-top: 70px;
+  }
 
   .outer {
     width: 80%;
   }
+  .box {
+    margin-left: 8px;
+  }
+  .para {
+    margin-left: 10px;
+  }
+  .becomeDonar {
+    border-radius: 10px;
+    width: 200px;
+    margin-left: 10px;
+  }
+  .findDonar {
+    border-radius: 10px;
+    height: 50px;
+    margin-left: 10px;
+  }
 }
-
 
 @media (max-width: 400px) {
   .outer {
@@ -159,9 +183,14 @@ width:100%;
   }
 
   @keyframes upDown {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
 }
-

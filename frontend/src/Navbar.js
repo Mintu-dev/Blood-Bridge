@@ -15,14 +15,13 @@ function Navbar() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [unread, setUnread] = useState(0);
-  const [myId, setMyId] = useState("");
+  const [ setMyId] = useState("");
 
-  const location = useLocation();
 
-  // ✅ NAVBAR REF
+  //  NAVBAR REF
   const navbarRef = useRef(null);
 
-  // ✅ CLOSE NAVBAR ON OUTSIDE CLICK (MOBILE)
+  //  CLOSE NAVBAR ON OUTSIDE CLICK (MOBILE)
   useEffect(() => {
     const handleClickOutside = (event) => {
       const navbar = document.getElementById("navbarNav");
@@ -32,12 +31,8 @@ function Navbar() {
 
       // If navbar is open
       if (navbar && navbar.classList.contains("show")) {
-
         // Click outside navbar
-        if (
-          navbarRef.current &&
-          !navbarRef.current.contains(event.target)
-        ) {
+        if (navbarRef.current && !navbarRef.current.contains(event.target)) {
           const bsCollapse = new Collapse(navbar, {
             toggle: false,
           });
@@ -65,7 +60,7 @@ function Navbar() {
 
           const total = Object.values(unreadCounts).reduce(
             (sum, val) => sum + (val || 0),
-            0
+            0,
           );
 
           setUnread(total);
@@ -88,10 +83,9 @@ function Navbar() {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URL}/api/user/profile`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${BASE_URL}/api/user/profile`, {
+          withCredentials: true,
+        });
 
         if (res?.data?.user) {
           setIsLoggedIn(true);
@@ -125,7 +119,7 @@ function Navbar() {
       await axios.post(
         `${BASE_URL}/api/user/logout`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       handleSuccess("Logout Successfully");
@@ -148,7 +142,6 @@ function Navbar() {
       className="navbar navbar-expand-lg bg-white py-2 py-lg-3 sticky-top shadow-sm"
     >
       <div className="container">
-
         {/* BRAND */}
         <HashLink
           smooth
@@ -158,9 +151,9 @@ function Navbar() {
         >
           <i className="bi bi-droplet-fill blood-icon"></i>
 
-          <span className="life-text">Life</span>
+          <span className="life-text">Blood</span>
 
-          <span className="connect-text">𝙲𝚘𝚗𝚗𝚎𝚌𝚝</span>
+          <span className="connect-text">Bridge</span>
         </HashLink>
 
         {/* MOBILE RIGHT ICONS */}
@@ -178,7 +171,6 @@ function Navbar() {
                 }}
               >
                 🔔
-
                 {unread > 0 && (
                   <span className="mobile-badge">
                     {unread > 99 ? "99+" : unread}
@@ -214,7 +206,6 @@ function Navbar() {
         {/* COLLAPSIBLE MENU */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav ms-auto gap-1 gap-lg-3 align-items-lg-center py-2 py-lg-0">
-
             <HashLink
               to="/#features"
               className="nav-link px-3 py-2 py-lg-0"
@@ -228,26 +219,40 @@ function Navbar() {
               className="nav-link px-3 py-2 py-lg-0"
               onClick={closeNavbar}
             >
-              How It Works
+              Get Started
+            </HashLink>
+            <HashLink
+              to="/#blood-types"
+              className="nav-link px-3 py-2 py-lg-0"
+              onClick={closeNavbar}
+            >
+              Blood Types
             </HashLink>
 
-            <HashLink
+            <Link
               to="/explore"
               className="nav-link px-3 py-2 py-lg-0"
               onClick={closeNavbar}
             >
               Explore
-            </HashLink>
+            </Link>
 
             <div className="border-top d-lg-none my-2"></div>
 
             {!isLoggedIn ? (
               <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 px-3 px-lg-0">
-
+                
                 <Link
                   to="/login"
                   className="nav-link signin text-center"
                   onClick={closeNavbar}
+                  style={{
+                    backgroundColor: "#fce4e4",
+                    color: "#c62828",
+                    borderRadius: "20px",
+                    padding: "8px 20px",
+                    fontWeight: "600",
+                  }}
                 >
                   Login
                 </Link>
@@ -261,17 +266,16 @@ function Navbar() {
                 </Link>
               </div>
             ) : (
-              <div className="d-flex flex-column flex-lg-row gap-2 gap-lg-3 align-items-lg-center px-3 px-lg-0">
-
-                {/* DESKTOP NOTIFICATION */}
+              
+              <div className="d-flex align-items-center gap-3 px-3 ms-auto">
+                {/* Bell Notification */}
                 <Link
                   to="/allchat"
-                  className="nav-link position-relative d-none d-lg-inline-block"
+                  className="position-relative"
                   onClick={closeNavbar}
-                  style={{ fontSize: "22px" }}
+                  style={{ color: "#c62828", fontSize: "20px" }}
                 >
                   🔔
-
                   {unread > 0 && (
                     <span className="desktop-badge">
                       {unread > 99 ? "99+" : unread}
@@ -279,44 +283,30 @@ function Navbar() {
                   )}
                 </Link>
 
-                {/* MOBILE MESSAGE */}
-                <Link
-                  to="/allchat"
-                  className="nav-link d-lg-none px-3 py-2"
-                  onClick={closeNavbar}
-                >
-                  💬 Messages{" "}
-                  {unread > 0 && (
-                    <span className="ms-1">
-                      ({unread})
-                    </span>
-                  )}
-                </Link>
-
-                {/* DESKTOP PROFILE */}
+                {/* Profile Icon */}
                 <Link
                   to="/profile"
-                  className="nav-link d-none d-lg-inline-block"
                   onClick={closeNavbar}
+                  style={{ color: "#555", fontSize: "20px" }}
                 >
-                  <i className="fa-solid fa-circle-user fs-3"></i>
+                  <i className="fa-solid fa-circle-user"></i>
                 </Link>
 
-                {/* MOBILE PROFILE */}
-                <Link
-                  to="/profile"
-                  className="nav-link d-lg-none px-3 py-2"
-                  onClick={closeNavbar}
-                >
-                  👤 Profile
-                </Link>
-
-                {/* LOGOUT */}
+                {/* Logout Button */}
                 <button
-                  className="btn btn-danger w-100 w-lg-auto"
                   onClick={() => {
                     handleLogout();
                     closeNavbar();
+                  }}
+                  style={{
+                    background: "linear-gradient(90deg, #c62828, #ff5252)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "20px",
+                    padding: "8px 20px",
+                    fontWeight: "600",
+                    fontSize: "0.9rem",
+                    cursor: "pointer",
                   }}
                 >
                   Logout

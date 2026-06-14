@@ -33,7 +33,7 @@ function Loader() {
             }
           `}
         </style>
-        <p className="mt-4 text-danger fw-bold fs-5">Loading LifeConnect...</p>
+        <p className="mt-4 text-danger fw-bold fs-5">Loading Blood Bridge...</p>
       </div>
     </div>
   );

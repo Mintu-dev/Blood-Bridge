@@ -3,62 +3,106 @@ import React from "react";
 function Difference() {
   return (
     <div
-      className="hero-section mt-5 mb-5"
       style={{
-        background:
-          "linear-gradient(135deg, #fef2f2 0%, #fff1f2 50%, #fce7f3 100%)",
-        color: "#FF5656",
+        background: "linear-gradient(135deg, #FEE2E2 0%, #ff5252 100%)",
+        padding: "60px 20px",
+        
       }}
     >
-      <div data-aos="flip-left"
-     data-aos-easing="ease-out-cubic"
-     data-aos-duration="2000" className="container mt-5">
-        <div className="row mt-5">
-          <div className="col mt-5 d-flex justify-content-center align-items-center mb-5">
-            <div
-              className="text-center p-5"
-              style={{ backgroundColor: "#F63049", borderRadius: "25px" }}
+      <div className="container">
+        <div className="row justify-content-center align-items-center">
+          <div className="col-lg-8 text-center">
+            <span
+              style={{
+                background: "rgba(255,255,255,0.15)",
+                color: "white",
+                padding: "6px 20px",
+                borderRadius: "20px",
+                fontSize: "0.85rem",
+                fontWeight: "600",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+              }}
             >
-              <h1 className="text-white fs-1">
-                𝑹𝒆𝒂𝒅𝒚 𝒕𝒐 𝑴𝒂𝒌𝒆 𝒂 𝑫𝒊𝒇𝒇𝒆𝒓𝒆𝒏𝒄𝒆?
-              </h1>
+              Take Action
+            </span>
 
-              <p className="text-white fs-5 mb-5">
-                Join thousands of donors and recipients on LifeConnect. Your
-                donation could save up to 3 lives.
-              </p>
+            <h1
+              style={{
+                color: "white",
+                fontWeight: "800",
+                fontSize: "2.8rem",
+                margin: "20px 0 16px",
+                lineHeight: "1.2",
+              }}
+            >
+              Ready to Save a Life?
+            </h1>
 
-              {/* Responsive Buttons */}
-              <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mt-4">
-                
-                <a
-                  href="/donarregister"
-                  style={{
-                    textDecoration: "none",
-                    backgroundColor: "white",
-                    color: "red",
-                    borderRadius: "30px",
-                  }}
-                  className="p-3 fw-bold fs-4 text-center"
-                >
-                  Register as Donar
-                </a>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.85)",
+                fontSize: "1.1rem",
+                maxWidth: "500px",
+                margin: "0 auto 40px",
+              }}
+            >
+              Join our growing community of donors and recipients. Your donation
+              can save up to <strong style={{ color: "white" }}>3 lives</strong>
+              .
+            </p>
 
-                <a
-                  href="/"
-                  style={{
-                    textDecoration: "none",
-                    backgroundColor: "#C3110C",
-                    color: "#fff",
-                    borderRadius: "30px",
-                  }}
-                  className="p-3 fw-bold fs-4 text-center"
-                >
-                  Request Blood
-                </a>
+            <div
+              style={{
+                display: "flex",
+                gap: "16px",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <a
+                href="/donarregister"
+                style={{
+                  background: "white",
+                  color: "#c62828",
+                  padding: "14px 36px",
+                  borderRadius: "30px",
+                  textDecoration: "none",
+                  fontWeight: "700",
+                  fontSize: "1rem",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+              >
+                🩸 Register as Donor
+              </a>
 
-              </div>
-
+              <a
+                href="/explore"
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  color: "white",
+                  padding: "14px 36px",
+                  borderRadius: "30px",
+                  textDecoration: "none",
+                  fontWeight: "700",
+                  fontSize: "1rem",
+                  border: "2px solid rgba(255,255,255,0.5)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+              >
+                🔍 Find Donors
+              </a>
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ function Work() {
                 color: "#FF5656",
               }}
             >
-              How It Works
+              Get Started
             </span>
 
             <h1 className="mt-4 fw-bold">𝑺𝒊𝒎𝒑𝒍𝒆 𝑺𝒕𝒆𝒑𝒔 𝒕𝒐 𝑺𝒂𝒗𝒆 𝑳𝒊𝒗𝒆𝒔</h1>
