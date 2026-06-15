@@ -19,7 +19,7 @@ export default function Profile() {
   }, []);
 
   const [fullname, setFullname] = React.useState("");
-  const [setMyId] = React.useState("");
+  const [, setMyId] = React.useState("");
   const [created, setCreated] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [bio, setBio] = React.useState("");
