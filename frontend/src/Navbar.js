@@ -5,7 +5,7 @@ import { HashLink } from "react-router-hash-link";
 import { Collapse } from "bootstrap";
 import axios from "axios";
 import socket from "./socket.js";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { handleSuccess } from "./utils/Error&SuccessHandler.js";
 
 const BASE_URL = process.env.REACT_APP_BACKEND;
@@ -100,7 +100,7 @@ function Navbar() {
     };
 
     checkLogin();
-  }, []);
+  }, [setMyId]);
 
   const closeNavbar = () => {
     const navbar = document.getElementById("navbarNav");

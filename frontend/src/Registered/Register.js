@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleSuccess, handleError } from "../utils/Error&SuccessHandler.js";
-import Loader from "../Loader.js";
 
 import {
   Box,
@@ -24,7 +23,7 @@ const BASE_URL = process.env.REACT_APP_BACKEND;
 
 function Register() {
   const navigate = useNavigate();
-  const [loader, setLoader] = useState(false);
+  const [, setLoader] = useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");

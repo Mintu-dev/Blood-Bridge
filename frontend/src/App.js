@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
-import Explore_Navbar from "./Explore_Navbar";
+import ExploreNavbar from "./Explore_Navbar";
 import Footer from "./Footer";
 import Explore from "./Explore/Explore";
 import { Outlet } from "react-router-dom";
@@ -74,7 +74,7 @@ function App() {
       {/* NotificationHandler ALWAYS mounted */}
       <NotificationHandler />
 
-      {isExplore ? <Explore_Navbar setResult={setResult} /> : <Navbar />}
+      {isExplore ? <ExploreNavbar setResult={setResult} /> : <Navbar />}
 
       {isExplore ? <Explore result={result} /> : <Outlet />}
 

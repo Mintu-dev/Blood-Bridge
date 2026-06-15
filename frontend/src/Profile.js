@@ -19,7 +19,7 @@ export default function Profile() {
   }, []);
 
   const [fullname, setFullname] = React.useState("");
-  const [ setMyId] = React.useState("");
+  const [setMyId] = React.useState("");
   const [created, setCreated] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [bio, setBio] = React.useState("");
@@ -59,7 +59,7 @@ export default function Profile() {
       setMyId(res.data.user._id);
     };
     getUser();
-  }, []);
+  }, [setMyId]);
 
   return (
     <div
@@ -133,114 +133,124 @@ export default function Profile() {
               <i className="fa-solid fa-user fs-"></i>
             </div>
 
-            
-             <div className="ms-3 mt-3 mt-md-0">
-              <h2 style={{ color: "white", fontSize: "1.3rem", margin: 0 , marginTop:"-15px"}}>
-                  {username}
+            <div className="ms-3 mt-3 mt-md-0">
+              <h2
+                style={{
+                  color: "white",
+                  fontSize: "1.3rem",
+                  margin: 0,
+                  marginTop: "-15px",
+                }}
+              >
+                {username}
               </h2>
-            {bio && (
-            <p style={{
-                color: "#ffe6e6",
-                margin: "4px 0 0",
-                fontSize: "0.8rem",
-                fontStyle: "italic",
-                opacity: 0.85,
-                maxWidth: "250px",
-             }}>
-            {bio}
-          </p>
-          )}
-        </div>
-
-          {/* DETAILS */}
-          <div className="row px-3 px-md-4 pb-4 mt-3">
-            {/* LEFT SIDE */}
-            <div className="col-md-6" data-aos="fade-right">
-              {[
-                { label: "Full Name", value: fullname },
-                { label: "Username", value: username },
-                {
-                  label: "Member Since",
-                  value: created
-                    ? created.toLocaleDateString("en-CA")
-                    : "Loading...",
-                },
-                {
-                  label: "Date of Birth",
-                  value: dob ? dob.toLocaleDateString("en-CA") : "Loading...",
-                },
-                { label: "Gender", value: gender },
-              ].map((item, index) => (
-                <div
-                  key={index}
+              {bio && (
+                <p
                   style={{
-                    background: "rgba(255,255,255,0.1)",
-                    padding: "10px 15px",
-                    marginBottom: "12px",
-                    borderRadius: "10px",
-                    color: "white",
-                    transition: "0.3s",
-                    backdropFilter: "blur(5px)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateX(5px)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.2)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateX(0px)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                    color: "#ffe6e6",
+                    margin: "4px 0 0",
+                    fontSize: "0.8rem",
+                    fontStyle: "italic",
+                    opacity: 0.85,
+                    maxWidth: "250px",
                   }}
                 >
-                  <span style={{ fontSize: "12px", opacity: 0.8 }}>
-                    {item.label}
-                  </span>
-                  <p style={{ margin: 0, fontWeight: "500" }}>{item.value}</p>
-                </div>
-              ))}
+                  {bio}
+                </p>
+              )}
             </div>
 
-            {/* RIGHT SIDE (BUTTONS) */}
-            <div
-              className="col-md-6 d-flex flex-column align-items-center justify-content-center gap-3 mt-4  mt-md-0 "
-              data-aos="fade-left"
-            >
-              {[
-                { text: "Change Password", path: "/changepassword" },
-                { text: "Edit Full Name", path: "/editfullname" },
-                { text: "Edit Bio", path: "/editbio" },
-              ].map((btn, index) => (
-                <Link
-                  key={index}
-                  to={btn.path}
-                  style={{
-                    textDecoration: "none",
-                    padding: "12px 25px",
-                    marginLeft:"50px",
-                    width: "200px",
-                    textAlign: "center",
-                    background: "white",
-                    color: "#D62828",
-                    borderRadius: "25px",
-                    fontWeight: "600",
-                    transition: "0.3s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.05)";
-                    e.currentTarget.style.background = "#ffe6e6";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.background = "white";
-                  }}
-                >
-                  {btn.text}
-                </Link>
-              ))}
+            {/* DETAILS */}
+            <div className="row px-3 px-md-4 pb-4 mt-3">
+              {/* LEFT SIDE */}
+              <div className="col-md-6" data-aos="fade-right">
+                {[
+                  { label: "Full Name", value: fullname },
+                  { label: "Username", value: username },
+                  {
+                    label: "Member Since",
+                    value: created
+                      ? created.toLocaleDateString("en-CA")
+                      : "Loading...",
+                  },
+                  {
+                    label: "Date of Birth",
+                    value: dob ? dob.toLocaleDateString("en-CA") : "Loading...",
+                  },
+                  { label: "Gender", value: gender },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      background: "rgba(255,255,255,0.1)",
+                      padding: "10px 15px",
+                      marginBottom: "12px",
+                      borderRadius: "10px",
+                      color: "white",
+                      transition: "0.3s",
+                      backdropFilter: "blur(5px)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateX(5px)";
+                      e.currentTarget.style.background =
+                        "rgba(255,255,255,0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateX(0px)";
+                      e.currentTarget.style.background =
+                        "rgba(255,255,255,0.1)";
+                    }}
+                  >
+                    <span style={{ fontSize: "12px", opacity: 0.8 }}>
+                      {item.label}
+                    </span>
+                    <p style={{ margin: 0, fontWeight: "500" }}>{item.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* RIGHT SIDE (BUTTONS) */}
+              <div
+                className="col-md-6 d-flex flex-column align-items-center justify-content-center gap-3 mt-4  mt-md-0 "
+                data-aos="fade-left"
+              >
+                {[
+                  { text: "Change Password", path: "/changepassword" },
+                  { text: "Edit Full Name", path: "/editfullname" },
+                  { text: "Edit Bio", path: "/editbio" },
+                ].map((btn, index) => (
+                  <Link
+                    key={index}
+                    to={btn.path}
+                    style={{
+                      textDecoration: "none",
+                      padding: "12px 25px",
+                      marginLeft: "50px",
+                      width: "200px",
+                      textAlign: "center",
+                      background: "white",
+                      color: "#D62828",
+                      borderRadius: "25px",
+                      fontWeight: "600",
+                      transition: "0.3s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.05)";
+                      e.currentTarget.style.background = "#ffe6e6";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.background = "white";
+                    }}
+                  >
+                    {btn.text}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
-      </div>
+    </div>
   );
 }
